@@ -15,7 +15,7 @@ struct MyGardenItem: View {
                 .scaledToFill()
                 .frame(width: 140, height: 80)
                 .clipped()
-                .cornerRadius(8, corners: [.topRight]) // ⬅️ Aplica só no canto superior direito da imagem
+                .cornerRadius(8, corners: [.topRight])
             
             VStack {
                 Text("Apple")

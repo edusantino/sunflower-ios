@@ -28,7 +28,7 @@ struct GardenView: View {
             .padding(.bottom, 20)
             .background(Color(red: 26/255, green: 28/255, blue: 24/255))
             
-            // Tabs personalizadas
+            // Custom tabs
             HStack(spacing: 0) {
                 TabButton(title: "My Plants", isSelected: selectedTab == 0, iconName: "camera.macro") {
                     selectedTab = 0
@@ -42,7 +42,7 @@ struct GardenView: View {
             .padding(.horizontal)
             .background(Color(red: 26/255, green: 28/255, blue: 24/255))
             
-            // Conteúdo das tabs
+            // Tab content
             TabView(selection: $selectedTab) {
                 MyPlantsView()
                     .tag(0)
