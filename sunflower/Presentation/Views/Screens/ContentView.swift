@@ -47,8 +47,8 @@ struct ContentView: View {
             
             // Tab content
             TabView(selection: $selectedTab) {
-                if (myGarden.isEmpty) {
-                    EmptyGardenView()
+                if myGarden.isEmpty {
+                    EmptyGardenView(selectedTab: $selectedTab)
                         .tag(0)
                 } else {
                     MyPlantsView()

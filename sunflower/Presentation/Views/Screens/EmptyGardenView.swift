@@ -7,29 +7,9 @@
 
 import SwiftUI
 
-import SwiftUI
-
-extension View {
-    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
-        clipShape(RoundedCorner(radius: radius, corners: corners))
-    }
-}
-
-struct RoundedCorner: Shape {
-    var radius: CGFloat = .infinity
-    var corners: UIRectCorner = .allCorners
-    
-    func path(in rect: CGRect) -> Path {
-        let path = UIBezierPath(
-            roundedRect: rect,
-            byRoundingCorners: corners,
-            cornerRadii: CGSize(width: radius, height: radius)
-        )
-        return Path(path.cgPath)
-    }
-}
-
 struct EmptyGardenView: View {
+    @Binding var selectedTab: Int
+    
     var body: some View {
         VStack {
             Text("Your garden is empty")
@@ -37,7 +17,7 @@ struct EmptyGardenView: View {
                 .foregroundColor(.white)
             
             Button {
-                // action: {}
+                selectedTab = 1
             } label: {
                 HStack {
                     Text("Add plant")
@@ -61,5 +41,5 @@ struct EmptyGardenView: View {
 }
 
 #Preview {
-    EmptyGardenView()
+    EmptyGardenView(selectedTab: .constant(0))
 }
