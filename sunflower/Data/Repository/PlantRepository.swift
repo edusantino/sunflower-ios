@@ -12,7 +12,7 @@ struct PlantRepository: PlantRepositoryProtocol {
         self.apiService = apiService
     }
     
-    func fetchPlants() async throws -> [PlantItem] {
+    func fetchPlants() async throws -> [PlantEntity] {
         return try await apiService.getPlants()
     }
 }

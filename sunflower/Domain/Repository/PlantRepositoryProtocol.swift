@@ -6,5 +6,5 @@
 //
 
 protocol PlantRepositoryProtocol {
-    func fetchPlants() async throws -> [PlantItem]
+    func fetchPlants() async throws -> [PlantEntity]
 }
