@@ -1,5 +1,5 @@
 //
-//  EmptyGarden.swift
+//  EmptyGardenView.swift
 //  sunflower
 //
 //  Created by Eduardo Santino Campos on 28/09/25.
@@ -29,7 +29,7 @@ struct RoundedCorner: Shape {
     }
 }
 
-struct EmptyGarden: View {
+struct EmptyGardenView: View {
     var body: some View {
         VStack {
             Text("Your garden is empty")
@@ -61,5 +61,5 @@ struct EmptyGarden: View {
 }
 
 #Preview {
-    EmptyGarden()
+    EmptyGardenView()
 }

@@ -1,12 +1,13 @@
 //
-//  PlantItem.swift
+//  DiscoverItem.swift
 //  sunflower
 //
 //  Created by Eduardo Santino Campos on 28/09/25.
 //
 
 import SwiftUI
-struct PlantItem: View {
+
+struct DiscoverItem: View {
     var body: some View {
         VStack(spacing: 0) {
             Image("avocado")
@@ -31,5 +32,5 @@ struct PlantItem: View {
 }
 
 #Preview {
-    PlantItem()
+    DiscoverItem()
 }

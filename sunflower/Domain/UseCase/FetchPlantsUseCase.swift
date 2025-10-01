@@ -14,7 +14,7 @@ struct FetchPlantsUseCase {
         self.repository = repository
     }
     
-    func execute() async throws -> [PlantEntity] {
+    func execute() async throws -> [Plant] {
         return try await repository.fetchPlants()
     }
 }

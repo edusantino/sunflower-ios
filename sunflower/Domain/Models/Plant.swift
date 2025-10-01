@@ -1,11 +1,11 @@
 //
-//  PlantDTO.swift
+//  Plant.swift
 //  sunflower
 //
 //  Created by Eduardo Santino Campos on 30/09/25.
 //
 
-struct PlantDTO: Codable {
+struct Plant: Codable {
     var plantId: String
     var name: String
     var plantDescription: String

@@ -10,7 +10,7 @@ import Combine
 
 @MainActor
 class PlantViewModel: ObservableObject {
-    @Published var plants: [PlantItem] = []
+    @Published var plants: [Plant] = []
     @Published var isLoading = false
     @Published var errorMessage: String? = nil
     

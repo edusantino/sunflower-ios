@@ -10,46 +10,70 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @Query private var myGarden: [PlantEntity]
+
+    @State private var selectedTab = 0
 
     var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-                    }
-                }
-                .onDelete(perform: deleteItems)
+        VStack(spacing: 0) {
+            HStack {
+                Spacer()
+                Text("My Garden")
+                    .font(.system(size: 32, weight: .bold))
+                    .foregroundColor(.white)
+                Spacer()
+                Image(systemName: "line.horizontal.3.decrease")
+                    .font(.system(size: 24))
+                    .foregroundColor(.white)
             }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
+            .padding(.horizontal)
+            .padding(.top, 60)
+            .padding(.bottom, 20)
+            .background(Color(red: 26/255, green: 28/255, blue: 24/255))
+            
+            // Custom tabs
+            HStack(spacing: 0) {
+                TabButton(title: "My Plants", isSelected: selectedTab == 0, iconName: "camera.macro") {
+                    selectedTab = 0
                 }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
+                
+                TabButton(title: "Discover", isSelected: selectedTab == 1, iconName:
+                            "leaf.fill") {
+                    selectedTab = 1
                 }
             }
-        } detail: {
-            Text("Select an item")
+            .padding(.horizontal)
+            .background(Color(red: 26/255, green: 28/255, blue: 24/255))
+            
+            // Tab content
+            TabView(selection: $selectedTab) {
+                if (myGarden.isEmpty) {
+                    EmptyGardenView()
+                        .tag(0)
+                } else {
+                    MyPlantsView()
+                        .tag(0)
+                }
+                
+                DiscoverView()
+                    .tag(1)
+            }
+            .tabViewStyle(.page(indexDisplayMode: .never))
         }
+        .ignoresSafeArea()
     }
 
     private func addItem() {
         withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
+            //let newItem = Item(timestamp: Date())
+            //modelContext.insert(newItem)
         }
     }
 
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
             for index in offsets {
-                modelContext.delete(items[index])
+                //modelContext.delete(items[index])
             }
         }
     }
@@ -57,5 +81,7 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+        .modelContainer(for: PlantEntity.self, inMemory: true)
 }
+
+
