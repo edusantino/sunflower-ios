@@ -1,5 +1,5 @@
 //
-//  MyPlantsView.swift
+//  DiscoverView.swift
 //  sunflower
 //
 //  Created by Eduardo Santino Campos on 01/10/25.
@@ -7,12 +7,14 @@
 
 import SwiftUI
 
-struct MyPlantsView: View {
+struct DiscoverView: View {
+    let plants: [Plant]
+    
     var body: some View {
         ScrollView {
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
-                ForEach(0..<6) { _ in
-                    MyGardenItem()
+                ForEach(0..<12) { index in
+                    DiscoverItem(plant: plants[index])
                 }
             }
             .padding()
@@ -22,5 +24,5 @@ struct MyPlantsView: View {
 }
 
 #Preview {
-    MyPlantsView()
+    DiscoverView(plants: [])
 }

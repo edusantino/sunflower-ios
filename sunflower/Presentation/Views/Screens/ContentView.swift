@@ -9,9 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query private var myGarden: [PlantEntity]
-
+    @StateObject private var viewModel = MyGardenViewModel()
     @State private var selectedTab = 0
 
     var body: some View {
@@ -47,15 +45,15 @@ struct ContentView: View {
             
             // Tab content
             TabView(selection: $selectedTab) {
-                if myGarden.isEmpty {
+                if viewModel.plants.isEmpty {
                     EmptyGardenView(selectedTab: $selectedTab)
                         .tag(0)
                 } else {
-                    MyPlantsView()
+                    MyGardenView()
                         .tag(0)
                 }
                 
-                DiscoverView()
+                DiscoverView(plants: myGarden)
                     .tag(1)
             }
             .tabViewStyle(.page(indexDisplayMode: .never))

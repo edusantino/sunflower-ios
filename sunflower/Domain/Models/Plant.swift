@@ -22,3 +22,15 @@ struct Plant: Codable {
         self.imageUrl = imageUrl
     }
 }
+
+extension Plant {
+    static var mock: Plant {
+        Plant(
+            plantId: "12", name: "Apple Tree", plantDescription: "This is a long description about Apple Tree", growZoneNumber: 12
+        )
+    }
+    
+    static var mockList: [Plant] {
+        [mock, mock, mock]
+    }
+}
