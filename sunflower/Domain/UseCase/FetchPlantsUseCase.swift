@@ -10,7 +10,7 @@ import Foundation
 struct FetchPlantsUseCase {
     private let repository: PlantRepositoryProtocol
     
-    init(repository: PlantRepositoryProtocol) {
+    nonisolated init(repository: PlantRepositoryProtocol = PlantRepository()) {
         self.repository = repository
     }
     

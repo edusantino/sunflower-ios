@@ -8,7 +8,7 @@
 struct PlantRepository: PlantRepositoryProtocol {
     let apiService: ApiService
     
-    init(apiService: ApiService) {
+    nonisolated init(apiService: ApiService = ApiService()) {
         self.apiService = apiService
     }
     

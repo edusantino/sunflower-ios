@@ -8,6 +8,12 @@
 import SwiftUI
 
 struct MyGardenItem: View {
+    let plant: Plant?
+    
+    init(plant: Plant?) {
+        self.plant = plant
+    }
+    
     var body: some View {
         VStack(spacing: 0) {
             Image("avocado")
@@ -51,5 +57,5 @@ struct MyGardenItem: View {
     }
 }
 #Preview {
-    MyGardenItem()
+    MyGardenItem(plant: .mock)
 }

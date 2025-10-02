@@ -8,12 +8,13 @@
 import SwiftUI
 
 struct MyGardenView: View {
+    let plants: [Plant] = []
     
     var body: some View {
         ScrollView {
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
-                ForEach(0..<6) { _ in
-                    MyGardenItem()
+                ForEach(0..<6) { index in
+                    MyGardenItem(plant: plants[index])
                 }
             }
             .padding()

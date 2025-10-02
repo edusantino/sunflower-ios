@@ -53,7 +53,7 @@ struct ContentView: View {
                         .tag(0)
                 }
                 
-                DiscoverView(plants: myGarden)
+                DiscoverView(plants: viewModel.plants)
                     .tag(1)
             }
             .tabViewStyle(.page(indexDisplayMode: .never))

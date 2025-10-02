@@ -15,11 +15,15 @@ class MyGardenViewModel: ObservableObject {
     
     private let repository: GardenRepositoryProtocol
     
-    init(repository: GardenRepositoryProtocol) {
-        self.repository = repository
+    init(repository: GardenRepositoryProtocol? = nil) {
+        if let repository = repository {
+            self.repository = repository
+        } else {
+            self.repository = GardenRepository()
+        }
     }
     
-    func fetchGarden() {
+    func loadGarden() {
         let result = repository.fetchGarden()
         plants = result
     }

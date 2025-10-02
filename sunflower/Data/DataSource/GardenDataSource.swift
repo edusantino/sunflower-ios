@@ -15,7 +15,13 @@ class GardenDataSource {
     }
     
     func fetchAll() -> [PlantEntity] {
-        
+        do {
+            let descriptor = FetchDescriptor<PlantEntity>()
+            return try modelContext.fetch(descriptor)
+        } catch {
+            print("Error fetching plants -> \(error)")
+            return []
+        }
     }
     
     func saveEntity(_ entity: PlantEntity) {

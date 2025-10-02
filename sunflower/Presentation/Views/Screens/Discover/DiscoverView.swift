@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct DiscoverView: View {
+    @StateObject var viewModel = PlantListViewModel()
     let plants: [Plant]
     
     var body: some View {
@@ -20,6 +21,9 @@ struct DiscoverView: View {
             .padding()
         }
         .background(Color(red: 26/255, green: 28/255, blue: 24/255))
+        .task {
+            await viewModel.loadPlants()
+        }
     }
 }
 

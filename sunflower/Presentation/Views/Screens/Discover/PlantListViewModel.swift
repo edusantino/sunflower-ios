@@ -9,14 +9,14 @@ import Foundation
 import Combine
 
 @MainActor
-class PlantViewModel: ObservableObject {
+class PlantListViewModel: ObservableObject {
     @Published var plants: [Plant] = []
     @Published var isLoading = false
     @Published var errorMessage: String? = nil
     
     private let fetchPlantsUseCase: FetchPlantsUseCase
     
-    init(fetchPlantsUseCase: FetchPlantsUseCase) {
+    init(fetchPlantsUseCase: FetchPlantsUseCase = FetchPlantsUseCase()) {
         self.fetchPlantsUseCase = fetchPlantsUseCase
     }
     
