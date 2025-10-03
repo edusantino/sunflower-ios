@@ -49,7 +49,7 @@ struct ContentView: View {
                     EmptyGardenView(selectedTab: $selectedTab)
                         .tag(0)
                 } else {
-                    MyGardenView()
+                    MyGardenView(plants: viewModel.plants)
                         .tag(0)
                 }
                 
@@ -59,6 +59,9 @@ struct ContentView: View {
             .tabViewStyle(.page(indexDisplayMode: .never))
         }
         .ignoresSafeArea()
+        .onAppear(perform: {
+            viewModel.loadGarden()
+        })
     }
 
     private func addItem() {

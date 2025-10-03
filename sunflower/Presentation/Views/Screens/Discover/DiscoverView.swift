@@ -14,8 +14,8 @@ struct DiscoverView: View {
     var body: some View {
         ScrollView {
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
-                ForEach(0..<12) { index in
-                    DiscoverItem(plant: plants[index])
+                ForEach(viewModel.plants) { plant in
+                    DiscoverItem(plant: plant)
                 }
             }
             .padding()
@@ -28,5 +28,9 @@ struct DiscoverView: View {
 }
 
 #Preview {
-    DiscoverView(plants: [])
+    DiscoverView(plants: [
+        Plant(plantId: "1", name: "Apple Tree", description: "Description 1", growZoneNumber: 12),
+        Plant(plantId: "2", name: "Rose Bush", description: "Description 2", growZoneNumber: 5),
+        Plant(plantId: "3", name: "Cactus", description: "Description 3", growZoneNumber: 9)
+    ])
 }

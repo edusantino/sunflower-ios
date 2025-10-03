@@ -25,6 +25,7 @@ class MyGardenViewModel: ObservableObject {
     
     func loadGarden() {
         let result = repository.fetchGarden()
+        print("async result: \(result)")
         plants = result
     }
     

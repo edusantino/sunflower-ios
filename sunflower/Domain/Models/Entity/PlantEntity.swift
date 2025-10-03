@@ -45,7 +45,7 @@ extension PlantEntity {
         return Plant(
             plantId: plantId,
             name: name,
-            plantDescription: plantDescription,
+            description: plantDescription,
             growZoneNumber: growZoneNumber,
             imageUrl: imageUrl
         )

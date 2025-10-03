@@ -15,13 +15,19 @@ struct DiscoverItem: View {
             PlantDetailsView(plant: plant)
         } label: {
             VStack(spacing: 0) {
-                Image("avocado")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 180, height: 100)
-                    .clipped()
+                AsyncImage(url: URL(string: plant.imageUrl)) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                } placeholder: {
+                    Image("avocado")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 180, height: 100)
+                        .clipped()
+                }
                 
-                Text("Apple")
+                Text(plant.name)
                     .frame(maxWidth: .infinity, minHeight: 50)
                     .font(.system(size: 16, weight: .bold))
                     .foregroundStyle(Color(red: 220/255, green: 231/255, blue: 216/255))

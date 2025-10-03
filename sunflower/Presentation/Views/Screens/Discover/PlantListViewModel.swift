@@ -28,6 +28,7 @@ class PlantListViewModel: ObservableObject {
             plants = result
         } catch {
             errorMessage = "Erro ao carregar plantas: \(error.localizedDescription)"
+            print(errorMessage ?? "error on fetch")
         }
         isLoading = false
     }

@@ -37,6 +37,9 @@ struct EmptyGardenView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(red: 26/255, green: 28/255, blue: 24/255)) // Background color
+        .onAppear {
+            print("Empty Garden Showing")
+        }
     }
 }
 

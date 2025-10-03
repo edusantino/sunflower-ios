@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct MyGardenView: View {
-    let plants: [Plant] = []
+    let plants: [Plant]
     
     var body: some View {
         ScrollView {
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
-                ForEach(0..<6) { index in
-                    MyGardenItem(plant: plants[index])
+                ForEach(plants) { plant in
+                    MyGardenItem(plant: plant)
                 }
             }
             .padding()
@@ -24,5 +24,9 @@ struct MyGardenView: View {
 }
 
 #Preview {
-    MyGardenView()
+    MyGardenView(plants: [
+        Plant(plantId: "1", name: "Apple Tree", description: "Description 1", growZoneNumber: 12),
+        Plant(plantId: "2", name: "Rose Bush", description: "Description 2", growZoneNumber: 5),
+        Plant(plantId: "3", name: "Cactus", description: "Description 3", growZoneNumber: 9)
+    ])
 }
