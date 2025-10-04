@@ -19,6 +19,7 @@ struct DiscoverItem: View {
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fill)
+                        .frame(width: 180, height: 100)
                 } placeholder: {
                     Image("avocado")
                         .resizable()
@@ -28,7 +29,7 @@ struct DiscoverItem: View {
                 }
                 
                 Text(plant.name)
-                    .frame(maxWidth: .infinity, minHeight: 50)
+                    .frame(maxWidth: .infinity, minHeight: 45)
                     .font(.system(size: 16, weight: .bold))
                     .foregroundStyle(Color(red: 220/255, green: 231/255, blue: 216/255))
                     .background(Color(red: 64/255, green: 74/255, blue: 56/255))

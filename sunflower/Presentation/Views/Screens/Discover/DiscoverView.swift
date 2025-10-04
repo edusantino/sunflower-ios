@@ -13,7 +13,7 @@ struct DiscoverView: View {
     
     var body: some View {
         ScrollView {
-            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
+            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
                 ForEach(viewModel.plants) { plant in
                     DiscoverItem(plant: plant)
                 }
