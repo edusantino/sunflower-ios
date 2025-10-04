@@ -16,7 +16,9 @@ struct DiscoverView: View {
             ScrollView {
                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
                     ForEach(viewModel.plants) { plant in
-                        DiscoverItem(plant: plant)
+                        DiscoverItem(onAddItem: { plant in
+                            viewModel.addPlant(plant)
+                        }, plant: plant)
                     }
                 }
                 .padding()

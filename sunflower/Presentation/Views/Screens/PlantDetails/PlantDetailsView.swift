@@ -9,6 +9,7 @@ import SwiftUI
 import Foundation
 
 struct PlantDetailsView: View {
+    let onAddPlant: (Plant) -> ()
     let plant: Plant
     
     var body: some View {
@@ -30,26 +31,31 @@ struct PlantDetailsView: View {
                     }
                     
                     AddButton()
+                        .onTapGesture {
+                            onAddPlant(plant)
+                        }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(Color(red: 26/255, green: 28/255, blue: 24/255))
                 
                 VStack(alignment: .center, spacing: 12) {
                     Text(plant.name)
                         .font(.title)
                         .fontWeight(.bold)
-                        .foregroundColor(.primary)
+                        .foregroundColor(.white)
                         .padding(.top, 20)
                     
                     Text("Watering needs")
                         .font(.headline)
-                        .foregroundColor(.secondary)
-                    Text("every 30 days")
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                    
+                    Text("every \(plant.wateringInterval) days")
                         .font(.body)
-                        .foregroundColor(.primary)
+                        .foregroundColor(.white)
+                    
                     Text(plant.description)
                         .font(.body)
-                        .foregroundColor(.primary)
+                        .foregroundColor(.white)
                         .padding(.top, 8)
                 }
                 .padding(.horizontal, 16)
@@ -68,6 +74,7 @@ struct PlantDetailsView: View {
                 }
             }
         }
+        .background(Color(red: 26/255, green: 28/255, blue: 24/255))
         .ignoresSafeArea(edges: .top)
         .navigationBarTitleDisplayMode(.inline)
     }

@@ -32,4 +32,15 @@ class PlantListViewModel: ObservableObject {
         }
         isLoading = false
     }
+    
+    func addPlant() async {
+        isLoading = true
+        errorMessage = nil
+        do {
+            let result try await fetchPlantsUseCase.execute()
+            success = true
+        } catch {
+            errorMessage = "Error on add plant to garden \(error.localizedDescription)"
+        }
+    }
 }

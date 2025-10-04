@@ -8,11 +8,14 @@
 import SwiftUI
 
 struct DiscoverItem: View {
+    let onAddItem: (Plant) -> ()
     let plant: Plant
     
     var body: some View {
         NavigationLink {
-            PlantDetailsView(plant: plant)
+            PlantDetailsView(onAddPlant: { plant in
+                onAddItem(plant)
+            }, plant: plant)
         } label: {
             VStack(spacing: 0) {
                 AsyncImage(url: URL(string: plant.imageUrl)) { image in

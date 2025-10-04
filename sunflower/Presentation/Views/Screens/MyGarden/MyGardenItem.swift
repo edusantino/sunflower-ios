@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct MyGardenItem: View {
+struct on: View {
     let plant: Plant?
     
     init(plant: Plant?) {
