@@ -12,47 +12,83 @@ struct PlantDetailsView: View {
     let plant: Plant
     
     var body: some View {
-        VStack {
-            ZStack(alignment: .bottomTrailing) {
-                AsyncImage(url: URL(string: plant.imageUrl)) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                } placeholder: {
-                    Image("avocado")
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(maxWidth: .infinity, maxHeight: 300)
-                        .clipped()
-                    
-                    Button(action: {}) {
-                        Image(systemName: "plus")
-                            .foregroundColor(Color.yellow)
+        ScrollView {
+            VStack(alignment: .center) {
+                ZStack(alignment: .bottomTrailing) {
+                    AsyncImage(url: URL(string: plant.imageUrl)) { image in
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(maxWidth: .infinity, maxHeight: 300)
+                            .clipped()
+                    } placeholder: {
+                        Image("avocado")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(maxWidth: .infinity, maxHeight: 300)
+                            .clipped()
                     }
-                    .frame(width: 60, height: 60)
-                    .background(Color(red: 42/255, green: 81/255, blue: 18/255)) // Button color
-                    .cornerRadius(8, corners: [.topRight, .bottomLeft])
-                    .overlay(
-                        RoundedRectangle(
-                            cornerRadius: 8)
-                        .stroke(Color.gray, lineWidth:
-                                    0)
-                        .clipShape(
-                            RoundedCorner(
-                                radius: 8, corners: [.topRight, .bottomLeft]
-                            )
-                        )
-                    )
-                    .padding(.trailing, 80)
-                    .offset(x: -20, y: 30)
+                    
+                    AddButton()
                 }
-                Spacer()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color(red: 26/255, green: 28/255, blue: 24/255))
+                
+                VStack(alignment: .center, spacing: 12) {
+                    Text(plant.name)
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .foregroundColor(.primary)
+                        .padding(.top, 20)
+                    
+                    Text("Watering needs")
+                        .font(.headline)
+                        .foregroundColor(.secondary)
+                    Text("every 30 days")
+                        .font(.body)
+                        .foregroundColor(.primary)
+                    Text(plant.description)
+                        .font(.body)
+                        .foregroundColor(.primary)
+                        .padding(.top, 8)
+                }
+                .padding(.horizontal, 16)
+                .padding(.bottom, 20)
+                
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color(red: 26/255, green: 28/255, blue: 24/255))
-            .ignoresSafeArea()
+            .navigationTitle(plant.name)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        sharePlant()
+                    } label: {
+                        Image(systemName: "square.and.arrow.up")
+                    }
+                }
+            }
         }
+        .ignoresSafeArea(edges: .top)
+        .navigationBarTitleDisplayMode(.inline)
     }
+    
+    private func sharePlant() {
+            let items: [Any] = [
+                "Confira esta planta incrível: \(plant.name)",
+                URL(string: "https://meuapp.com/plants/\(plant.id)") // se tiver deep link
+            ].compactMap { $0 }
+            
+            let activityVC = UIActivityViewController(activityItems: items, applicationActivities: nil)
+            
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let rootViewController = windowScene.windows.first?.rootViewController {
+                activityVC.popoverPresentationController?.sourceView = rootViewController.view
+                activityVC.popoverPresentationController?.sourceRect = CGRect(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2, width: 0, height: 0)
+                
+                rootViewController.present(activityVC, animated: true)
+            }
+        }
+    
 }
 
 #Preview {

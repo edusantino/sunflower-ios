@@ -12,17 +12,19 @@ struct DiscoverView: View {
     let plants: [Plant]
     
     var body: some View {
-        ScrollView {
-            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
-                ForEach(viewModel.plants) { plant in
-                    DiscoverItem(plant: plant)
+        NavigationStack {
+            ScrollView {
+                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
+                    ForEach(viewModel.plants) { plant in
+                        DiscoverItem(plant: plant)
+                    }
                 }
+                .padding()
             }
-            .padding()
-        }
-        .background(Color(red: 26/255, green: 28/255, blue: 24/255))
-        .task {
-            await viewModel.loadPlants()
+            .background(Color(red: 26/255, green: 28/255, blue: 24/255))
+            .task {
+                await viewModel.loadPlants()
+            }
         }
     }
 }
