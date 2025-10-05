@@ -11,6 +11,7 @@ import Foundation
 struct PlantDetailsView: View {
     let onAddPlant: (Plant) -> ()
     let plant: Plant
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         ScrollView {
@@ -60,31 +61,30 @@ struct PlantDetailsView: View {
                 }
                 .padding(.horizontal, 16)
                 .padding(.bottom, 20)
-                
-            }
-            .navigationTitle(plant.name)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        sharePlant()
-                    } label: {
-                        Image(systemName: "square.and.arrow.up")
-                    }
-                }
             }
         }
         .background(Color(red: 26/255, green: 28/255, blue: 24/255))
         .ignoresSafeArea(edges: .top)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    sharePlant()
+                } label: {
+                    Image(systemName: "square.and.arrow.up")
+                        .foregroundColor(.white)
+                }
+            }
+        }
     }
     
     private func sharePlant() {
             let items: [Any] = [
                 "Confira esta planta incrível: \(plant.name)",
-                URL(string: "https://meuapp.com/plants/\(plant.id)") // se tiver deep link
+                URL(string: "https://meuapp.com/plants/\(plant.id)") // TODO deeplink
             ].compactMap { $0 }
             
+        // IPAD
             let activityVC = UIActivityViewController(activityItems: items, applicationActivities: nil)
             
             if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
@@ -99,5 +99,5 @@ struct PlantDetailsView: View {
 }
 
 #Preview {
-    PlantDetailsView(plant: .mock)
+    PlantDetailsView(onAddPlant: { _ in }, plant: .mock)
 }

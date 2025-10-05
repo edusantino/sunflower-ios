@@ -37,4 +37,15 @@ extension Plant {
     static var mockList: [Plant] {
         [mock, mock, mock]
     }
+    
+    func toEntity() -> PlantEntity {
+        return PlantEntity(
+            plantId: self.id,
+            name: self.name,
+            plantDescription: self.description,
+            growZoneNumber: self.growZoneNumber,
+            wateringInterval: self.wateringInterval,
+            imageUrl: self.imageUrl
+        )
+    }
 }

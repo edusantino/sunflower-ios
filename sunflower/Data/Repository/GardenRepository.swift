@@ -15,4 +15,9 @@ struct GardenRepository: GardenRepositoryProtocol {
         let dataSource = GardenDataSource(modelContext: modelContext)
         return dataSource.fetchAll().map { $0.toDomain() }
     }
+    
+    func addPlant(plant: Plant) {
+        let dataSource = GardenDataSource(modelContext: modelContext)
+        dataSource.saveEntity(plant.toEntity())
+    }
 }

@@ -7,4 +7,5 @@
 
 protocol GardenRepositoryProtocol {
     func fetchGarden() -> [Plant]
+    func addPlant(plant: Plant)
 }

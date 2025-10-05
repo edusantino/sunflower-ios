@@ -33,7 +33,7 @@ class MyGardenViewModel: ObservableObject {
         
     }
     
-    func addPlant() {
-        
+    func addPlant(plant: Plant) {
+        repository.addPlant(plant: plant)
     }
 }

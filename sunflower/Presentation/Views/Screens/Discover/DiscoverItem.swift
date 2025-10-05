@@ -48,5 +48,5 @@ struct DiscoverItem: View {
 }
 
 #Preview {
-    DiscoverItem(plant: .mock)
+    DiscoverItem(onAddItem: { _ in }, plant: .mock)
 }
