@@ -58,6 +58,7 @@ struct PlantDetailsView: View {
                         .font(.body)
                         .foregroundColor(.white)
                         .padding(.top, 8)
+                        .multilineTextAlignment(.leading)
                 }
                 .padding(.horizontal, 16)
                 .padding(.bottom, 20)
