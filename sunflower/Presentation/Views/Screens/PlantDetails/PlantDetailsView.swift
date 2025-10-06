@@ -31,10 +31,9 @@ struct PlantDetailsView: View {
                             .clipped()
                     }
                     
-                    AddButton()
-                        .onTapGesture {
-                            onAddPlant(plant)
-                        }
+                    AddButton(isAdded: true, onTap: {
+                        onAddPlant(plant)
+                    })
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 

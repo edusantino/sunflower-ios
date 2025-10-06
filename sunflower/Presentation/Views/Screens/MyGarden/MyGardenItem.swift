@@ -8,12 +8,8 @@
 import SwiftUI
 
 struct MyGardenItem: View {
-    let plant: Plant?
-    
-    init(plant: Plant?) {
-        self.plant = plant
-    }
-    
+    let plant: Plant
+
     var body: some View {
         VStack(spacing: 0) {
             Image("avocado")
