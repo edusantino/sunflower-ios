@@ -31,8 +31,10 @@ struct PlantDetailsView: View {
                             .clipped()
                     }
                     
-                    AddButton(isAdded: true, onTap: {
-                        onAddPlant(plant)
+                    AddButton(isAdded: plant.isAdded, onTap: {
+                        var copyPlant = plant
+                        copyPlant.isAdded = true
+                        onAddPlant(copyPlant)
                     })
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)

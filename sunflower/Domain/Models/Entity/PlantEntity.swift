@@ -16,14 +16,16 @@ final class PlantEntity {
     var growZoneNumber: Int
     var wateringInterval: Int
     var imageUrl: String
+    var isAdded: Bool
     
-    init(plantId: String, name: String, plantDescription: String, growZoneNumber: Int, wateringInterval: Int = 7, imageUrl: String = "") {
+    init(plantId: String, name: String, plantDescription: String, growZoneNumber: Int, wateringInterval: Int = 7, imageUrl: String = "", isAdded: Bool = false) {
             self.plantId = plantId
             self.name = name
             self.plantDescription = plantDescription
             self.growZoneNumber = growZoneNumber
             self.wateringInterval = wateringInterval
             self.imageUrl = imageUrl
+        self.isAdded = isAdded
     }
     
     /**
@@ -47,6 +49,7 @@ extension PlantEntity {
             name: name,
             description: plantDescription,
             growZoneNumber: growZoneNumber,
+            wateringInterval: 3,
             imageUrl: imageUrl
         )
     }

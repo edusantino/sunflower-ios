@@ -9,7 +9,7 @@ import Foundation
 
 struct Plant: Codable, Identifiable {
     var id: String { plantId }
-
+    var isAdded: Bool = false
     var plantId: String
     var name: String
     var description: String
@@ -17,20 +17,15 @@ struct Plant: Codable, Identifiable {
     var wateringInterval: Int
     var imageUrl: String
     
-    init(plantId: String, name: String, description: String, growZoneNumber: Int, wateringInterval: Int = 7, imageUrl: String = "") {
-        self.plantId = plantId
-        self.name = name
-        self.description = description
-        self.growZoneNumber = growZoneNumber
-        self.wateringInterval = wateringInterval
-        self.imageUrl = imageUrl
+    enum CodingKeys: String, CodingKey {
+        case plantId, name, description, growZoneNumber, wateringInterval, imageUrl
     }
 }
 
 extension Plant {
     static var mock: Plant {
         Plant(
-            plantId: "12", name: "Apple Tree", description: "This is a long description about Apple Tree", growZoneNumber: 12
+            plantId: "12", name: "Apple Tree", description: "This is a long description about Apple Tree", growZoneNumber: 12, wateringInterval: 3, imageUrl: ""
         )
     }
     
@@ -45,7 +40,8 @@ extension Plant {
             plantDescription: self.description,
             growZoneNumber: self.growZoneNumber,
             wateringInterval: self.wateringInterval,
-            imageUrl: self.imageUrl
+            imageUrl: self.imageUrl,
+            isAdded: self.isAdded
         )
     }
 }

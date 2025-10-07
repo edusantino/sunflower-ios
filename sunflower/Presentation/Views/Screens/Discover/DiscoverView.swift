@@ -32,8 +32,8 @@ struct DiscoverView: View {
 
 #Preview {
     DiscoverView(onAddPlant: {_ in }, plants: [
-        Plant(plantId: "1", name: "Apple Tree", description: "Description 1", growZoneNumber: 12),
-        Plant(plantId: "2", name: "Rose Bush", description: "Description 2", growZoneNumber: 5),
-        Plant(plantId: "3", name: "Cactus", description: "Description 3", growZoneNumber: 9)
+        Plant(plantId: "1", name: "Apple Tree", description: "Description 1", growZoneNumber: 12, wateringInterval: 3, imageUrl: ""),
+        Plant(plantId: "2", name: "Rose Bush", description: "Description 2", growZoneNumber: 12, wateringInterval: 3, imageUrl: ""),
+        Plant(plantId: "3", name: "Cactus", description: "Description 3", growZoneNumber: 12, wateringInterval: 3, imageUrl: "")
     ])
 }
