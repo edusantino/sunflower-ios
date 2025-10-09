@@ -17,6 +17,11 @@ struct PlantRepository: PlantRepositoryProtocol {
     }
     
     func fetchPlants() async throws -> [Plant] {
-        return try await remoteConfig.getPlants()
+        do {
+            let plants = remoteConfig.getString(forKey: "plant_discover")
+            return true
+        } catch {
+            println
+        }
     }
 }

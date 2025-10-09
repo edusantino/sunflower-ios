@@ -8,14 +8,13 @@
 import SwiftUI
 
 struct DiscoverView: View {
-    @StateObject var viewModel = PlantListViewModel()
     let onAddPlant: (Plant) -> ()
     let plants: [Plant]
     
     var body: some View {
         ScrollView {
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
-                ForEach(viewModel.plants) { plant in
+                ForEach(plants) { plant in
                     DiscoverItem(onAddItem: { plant in
                         onAddPlant(plant)
                     }, plant: plant)
@@ -24,9 +23,6 @@ struct DiscoverView: View {
             .padding()
         }
         .background(Color(red: 26/255, green: 28/255, blue: 24/255))
-        .task {
-            await viewModel.loadPlants()
-        }
     }
 }
 

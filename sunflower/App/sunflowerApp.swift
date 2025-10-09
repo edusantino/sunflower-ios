@@ -28,7 +28,10 @@ struct sunflowerApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView(
-                viewModel: compositionRoot.makePlantListViewModel()
+                plantListViewModel: compositionRoot.makePlantListViewModel(),
+                myGardenViewModel: compositionRoot.makeMyGardenViewModel(
+                    modelContext: sharedModelContainer.mainContext
+                )
             )
         }
         .modelContainer(sharedModelContainer)

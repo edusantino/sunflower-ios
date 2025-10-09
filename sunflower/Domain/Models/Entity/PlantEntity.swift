@@ -41,16 +41,3 @@ final class PlantEntity {
             return since > nextWateringDate
         }
 }
-
-extension PlantEntity {
-    func toDomain() -> Plant {
-        return Plant(
-            plantId: plantId,
-            name: name,
-            description: plantDescription,
-            growZoneNumber: growZoneNumber,
-            wateringInterval: 3,
-            imageUrl: imageUrl
-        )
-    }
-}

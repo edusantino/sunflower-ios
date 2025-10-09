@@ -9,8 +9,18 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @StateObject var viewModel: MyGardenViewModel
+    @Environment(\.modelContext) private var modelContext
+    
+    @StateObject var plantListViewModel: PlantListViewModel
+    @StateObject private var myGardenViewModel: MyGardenViewModel
+    
     @State private var selectedTab = 0
+    
+    init(plantListViewModel: PlantListViewModel,
+         myGardenViewModel: MyGardenViewModel) {
+        _plantListViewModel = StateObject(wrappedValue: plantListViewModel)
+        _myGardenViewModel = StateObject(wrappedValue: myGardenViewModel)
+    }
 
     var body: some View {
         NavigationStack {
@@ -45,25 +55,25 @@ struct ContentView: View {
                 
                 // Tab content
                 TabView(selection: $selectedTab) {
-                    if viewModel.plants.isEmpty {
+                    if myGardenViewModel.plants.isEmpty {
                         EmptyGardenView(selectedTab: $selectedTab)
                             .tag(0)
                     } else {
-                        MyGardenView(plants: viewModel.plants)
+                        MyGardenView(plants: myGardenViewModel.plants)
                             .tag(0)
                     }
                     
                     DiscoverView(onAddPlant: { plant in
-                        viewModel.addPlant(plant: plant)
+                        myGardenViewModel.addPlant(plant: plant)
                         print("Plant Added from view!")
-                    }, plants: viewModel.plants)
+                    }, plants: plantListViewModel.plants)
                         .tag(1)
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
             }
             .ignoresSafeArea()
             .onAppear(perform: {
-                viewModel.loadGarden()
+                myGardenViewModel.loadGarden()
             })
         }
     }
@@ -85,9 +95,6 @@ struct ContentView: View {
 }
 
 #Preview {
-    let fakeRepository = MockPlantRepository() // você pode criar um mock simples
-    let fakeViewModel = MyGardenViewModel(repository: fakeRepository)
-
     ContentView(viewModel: fakeViewModel)
         .modelContainer(for: PlantEntity.self, inMemory: true)
 }

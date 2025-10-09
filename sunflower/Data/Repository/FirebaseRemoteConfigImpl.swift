@@ -14,15 +14,15 @@ final class FirebaseRemoteConfigImpl: ConfigRepository {
     init() {
         self.remoteConfig = RemoteConfig.remoteConfig()
         
-        // Configura parâmetros padrões, se quiser
+        // Set default values
         let settings = RemoteConfigSettings()
-        settings.minimumFetchInterval = 3600 // 1 hora entre fetches
+        settings.minimumFetchInterval = 3600 // 1h fetch interval
         remoteConfig.configSettings = settings
     }
     
     func fetchConfig() async -> Bool {
         do {
-            // Fetch remoto e ativa os valores
+            // Fetch remote and activate values
             try await remoteConfig.fetchAndActivate()
             return true
         } catch {

@@ -9,17 +9,19 @@ import UIKit
 import SwiftUI
 
 struct GardenRepository: GardenRepositoryProtocol {
-    @Environment(\.modelContext) private var modelContext
+    let gardenDataSource: GardenDataSourceProtocol
     
-    func fetchGarden() -> [Plant] {
-        let dataSource = GardenDataSource(modelContext: modelContext)
-        return dataSource.fetchAll().map { $0.toDomain() }
+    init(gardenDataSource: GardenDataSourceProtocol) {
+        self.gardenDataSource = gardenDataSource
     }
     
-    func addPlant(plant: Plant) {
-        print("Repository folder!")
-
-        let dataSource = GardenDataSource(modelContext: modelContext)
-        dataSource.saveEntity(plant.toEntity())
+    func fetchGarden() throws -> [Plant] {
+        let entities = try gardenDataSource.fetchAllPlants()
+        return entities.map { PlantMapper.toDomain(entity: $0) }
+    }
+    
+    func addPlant(plant: Plant) -> Bool {
+        let entity = PlantMapper.toEntity(model: plant)
+        return gardenDataSource.addPlant(entity)
     }
 }

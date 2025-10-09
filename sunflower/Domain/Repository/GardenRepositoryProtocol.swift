@@ -6,6 +6,6 @@
 //
 
 protocol GardenRepositoryProtocol {
-    func fetchGarden() -> [Plant]
-    func addPlant(plant: Plant)
+    func fetchGarden() throws -> [Plant]
+    func addPlant(plant: Plant) -> Bool
 }
