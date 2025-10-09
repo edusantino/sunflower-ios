@@ -5,8 +5,9 @@
 //  Created by Eduardo Santino Campos on 08/10/25.
 //
 
-struct MockDataSource: PlantDataSourceProtocol {
+struct MockDataSource {
     func fetchAll() async throws -> [Plant] {
+        print("📦 Loading data from: MockedData")
         return [
             Plant(
                 plantId: "123",

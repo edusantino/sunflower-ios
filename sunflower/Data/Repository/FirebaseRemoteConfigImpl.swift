@@ -13,10 +13,16 @@ final class FirebaseRemoteConfigImpl: ConfigRepository {
 
     init() {
         self.remoteConfig = RemoteConfig.remoteConfig()
-        
-        // Set default values
+        // Set default values - CRUCIAL para quando o fetch falha ou não foi feito
+        let defaultValues: [String: Any] = [
+            "feature_plants": true,
+            "feature_garden": true,
+            "api_endpoint": "production"
+        ]
+        remoteConfig.setDefaults(defaultValues as? [String: NSObject])
         let settings = RemoteConfigSettings()
         settings.minimumFetchInterval = 3600 // 1h fetch interval
+        
         remoteConfig.configSettings = settings
     }
     

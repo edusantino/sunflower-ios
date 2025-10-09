@@ -65,9 +65,15 @@ struct ContentView: View {
                     
                     DiscoverView(onAddPlant: { plant in
                         myGardenViewModel.addPlant(plant: plant)
-                        print("Plant Added from view!")
                     }, plants: plantListViewModel.plants)
                         .tag(1)
+                        .onAppear {
+                            if plantListViewModel.plants.isEmpty {
+                                Task {
+                                    await plantListViewModel.loadPlants()
+                                }
+                            }
+                        }
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
             }
@@ -77,24 +83,4 @@ struct ContentView: View {
             })
         }
     }
-    
-    private func addItem() {
-        withAnimation {
-            //let newItem = Item(timestamp: Date())
-            //modelContext.insert(newItem)
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                //modelContext.delete(items[index])
-            }
-        }
-    }
-}
-
-#Preview {
-    ContentView(viewModel: fakeViewModel)
-        .modelContainer(for: PlantEntity.self, inMemory: true)
 }

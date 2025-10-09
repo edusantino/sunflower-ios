@@ -20,6 +20,7 @@ class PlantListViewModel: ObservableObject {
         self.repository = plantRepository
     }
     
+    @MainActor
     func loadPlants() async {
         isLoading = true
         errorMessage = nil

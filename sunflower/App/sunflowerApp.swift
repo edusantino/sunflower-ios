@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import Firebase
 
 @main
 struct sunflowerApp: App {
@@ -23,7 +24,12 @@ struct sunflowerApp: App {
         }
     }()
     
-    private let compositionRoot = CompositionRoot()
+    private var compositionRoot: CompositionRoot!
+    
+    init() {
+        FirebaseApp.configure()
+        self.compositionRoot = CompositionRoot()
+    }
 
     var body: some Scene {
         WindowGroup {

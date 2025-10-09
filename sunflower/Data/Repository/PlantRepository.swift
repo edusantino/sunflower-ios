@@ -7,21 +7,32 @@
 
 struct PlantRepository: PlantRepositoryProtocol {
     let remoteConfig: ConfigRepository
-    let offlineDataSource: OfflineDataSource
+    let plantDataSource: PlantDataSource
     let mockDataSource: MockDataSource
     
-    init(remoteConfig: ConfigRepository, offlineDataSource: OfflineDataSource, mockDataSource: MockDataSource) {
+    init(remoteConfig: ConfigRepository, plantDataSource: PlantDataSource, mockDataSource: MockDataSource) {
         self.remoteConfig = remoteConfig
-        self.offlineDataSource = offlineDataSource
+        self.plantDataSource = plantDataSource
         self.mockDataSource = mockDataSource
     }
     
     func fetchPlants() async throws -> [Plant] {
-        do {
-            let plants = remoteConfig.getString(forKey: "plant_discover")
-            return true
-        } catch {
-            println
+        let result = remoteConfig.getString(forKey: "plant_discover")
+        if !result.isEmpty {
+            do {
+                let plants = try await plantDataSource.fetchFromJSONString(json: result)
+                return plants
+            } catch {
+                print("Failed to fetch from JSON string: \(error)")
+            }
         }
+        do {
+            let plants = try await plantDataSource.fetchFromJSONFile()
+            return plants
+        } catch {
+            print("Failed to fetch from JSON file: \(error)")
+        }
+        // Last try: MockData
+        return try await mockDataSource.fetchAll()
     }
 }

@@ -6,6 +6,7 @@
 //
 
 protocol PlantDataSourceProtocol {
-    func fetchAll() async throws -> [Plant]
+    func fetchFromJSONFile() async throws -> [Plant]
     func getPlantDetails(id: String) async throws -> Plant
+    func fetchFromJSONString(json: String) async throws -> [Plant]
 }

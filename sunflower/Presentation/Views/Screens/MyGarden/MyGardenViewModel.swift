@@ -12,21 +12,22 @@ import Combine
 class MyGardenViewModel: ObservableObject {
     @Published var plants: [Plant] = []
     @Published var isLoading: Bool = false
+    @Published var uiResponse: Bool = false
     
     private let repository: GardenRepositoryProtocol
     
-    init(repository: GardenRepositoryProtocol? = nil) {
-        if let repository = repository {
-            self.repository = repository
-        } else {
-            self.repository = GardenRepository()
-        }
+    init(repository: GardenRepositoryProtocol) {
+        self.repository = repository
     }
     
     func loadGarden() {
-        let result = repository.fetchGarden()
-        print("async result: \(result)")
-        plants = result
+        do {
+            let result = try repository.fetchGarden()
+            print("async result: \(result)")
+            plants = result
+        } catch {
+            print("Plants not loaded: []")
+        }
     }
     
     func deletePlant() {
@@ -34,8 +35,6 @@ class MyGardenViewModel: ObservableObject {
     }
     
     func addPlant(plant: Plant) {
-        print("viewModel event: added!")
-
-        repository.addPlant(plant: plant)
+        uiResponse = repository.addPlant(plant: plant)
     }
 }
