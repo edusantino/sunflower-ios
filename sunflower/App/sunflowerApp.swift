@@ -22,10 +22,14 @@ struct sunflowerApp: App {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
+    
+    private let compositionRoot = CompositionRoot()
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(
+                viewModel: compositionRoot.makePlantListViewModel()
+            )
         }
         .modelContainer(sharedModelContainer)
     }

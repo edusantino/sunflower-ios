@@ -17,6 +17,8 @@ struct GardenRepository: GardenRepositoryProtocol {
     }
     
     func addPlant(plant: Plant) {
+        print("Repository folder!")
+
         let dataSource = GardenDataSource(modelContext: modelContext)
         dataSource.saveEntity(plant.toEntity())
     }

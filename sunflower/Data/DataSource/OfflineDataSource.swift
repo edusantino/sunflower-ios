@@ -1,15 +1,25 @@
 //
-//  ApiService.swift
+//  OfflineDataSource.swift
 //  sunflower
 //
-//  Created by Eduardo Santino Campos on 30/09/25.
+//  Created by Eduardo Santino Campos on 01/10/25.
 //
 
 import SwiftData
 import Foundation
 
-struct ApiService {
-    func getPlants() async throws -> [Plant] {
+struct OfflineDataSource: PlantDataSourceProtocol {
+    
+    func getPlantDetails(id: String) async throws -> Plant { // Mude para String
+            let plants = try await fetchAll()
+            guard let plant = plants.first(where: { $0.id == id }) else {
+                throw NSError(domain: "PlantNotFound", code: 404, userInfo: [NSLocalizedDescriptionKey: "Plant with id \(id) not found"])
+            }
+            return plant
+        }
+    
+
+    func fetchAll() async throws -> [Plant] {
         print("🔍 Searching for plants.json in bundle...")
         
         guard let url = Bundle.main.url(forResource: "plants", withExtension: "json") else {

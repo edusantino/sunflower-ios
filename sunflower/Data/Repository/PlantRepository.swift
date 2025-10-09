@@ -6,13 +6,17 @@
 //
 
 struct PlantRepository: PlantRepositoryProtocol {
-    let apiService: ApiService
+    let remoteConfig: ConfigRepository
+    let offlineDataSource: OfflineDataSource
+    let mockDataSource: MockDataSource
     
-    nonisolated init(apiService: ApiService = ApiService()) {
-        self.apiService = apiService
+    init(remoteConfig: ConfigRepository, offlineDataSource: OfflineDataSource, mockDataSource: MockDataSource) {
+        self.remoteConfig = remoteConfig
+        self.offlineDataSource = offlineDataSource
+        self.mockDataSource = mockDataSource
     }
     
     func fetchPlants() async throws -> [Plant] {
-        return try await apiService.getPlants()
+        return try await remoteConfig.getPlants()
     }
 }

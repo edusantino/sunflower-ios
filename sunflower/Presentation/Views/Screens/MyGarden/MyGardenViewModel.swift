@@ -34,6 +34,8 @@ class MyGardenViewModel: ObservableObject {
     }
     
     func addPlant(plant: Plant) {
+        print("viewModel event: added!")
+
         repository.addPlant(plant: plant)
     }
 }

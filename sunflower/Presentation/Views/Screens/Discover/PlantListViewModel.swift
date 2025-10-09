@@ -14,17 +14,17 @@ class PlantListViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String? = nil
     
-    private let fetchPlantsUseCase: FetchPlantsUseCase
+    private let repository: PlantRepositoryProtocol
     
-    init(fetchPlantsUseCase: FetchPlantsUseCase = FetchPlantsUseCase()) {
-        self.fetchPlantsUseCase = fetchPlantsUseCase
+    init(plantRepository: PlantRepositoryProtocol) {
+        self.repository = plantRepository
     }
     
     func loadPlants() async {
         isLoading = true
         errorMessage = nil
         do {
-            let result = try await fetchPlantsUseCase.execute()
+            let result = try await repository.fetchPlants()
             plants = result
         } catch {
             errorMessage = "Erro ao carregar plantas: \(error.localizedDescription)"

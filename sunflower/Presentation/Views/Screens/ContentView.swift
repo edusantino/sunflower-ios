@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @StateObject private var viewModel = MyGardenViewModel()
+    @StateObject var viewModel: MyGardenViewModel
     @State private var selectedTab = 0
 
     var body: some View {
@@ -55,6 +55,7 @@ struct ContentView: View {
                     
                     DiscoverView(onAddPlant: { plant in
                         viewModel.addPlant(plant: plant)
+                        print("Plant Added from view!")
                     }, plants: viewModel.plants)
                         .tag(1)
                 }
@@ -84,8 +85,9 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    let fakeRepository = MockPlantRepository() // você pode criar um mock simples
+    let fakeViewModel = MyGardenViewModel(repository: fakeRepository)
+
+    ContentView(viewModel: fakeViewModel)
         .modelContainer(for: PlantEntity.self, inMemory: true)
 }
-
-
