@@ -61,7 +61,7 @@ extension Plant {
     
     var plantedDate: String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "dd MMM, hh:mma"
+        formatter.dateFormat = "dd MMM, yyyy"
         formatter.locale = Locale(identifier: "en_US_POSIX")
         return formatter.string(from: birthDate)
     }
