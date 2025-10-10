@@ -16,9 +16,12 @@ final class PlantEntity {
     var growZoneNumber: Int
     var wateringInterval: Int
     var imageUrl: String
-    var isAdded: Bool
+    var isAdded: Bool = false
+    var birthDate: Date = Date()
+    var lastWateringDate: Date = Date()
     
-    init(plantId: String, name: String, plantDescription: String, growZoneNumber: Int, wateringInterval: Int = 7, imageUrl: String = "", isAdded: Bool = false) {
+    init(plantId: String, name: String, plantDescription: String, growZoneNumber: Int,
+         wateringInterval: Int = 7, imageUrl: String = "", isAdded: Bool = false, birthDate: Date, lastWateringDate: Date) {
             self.plantId = plantId
             self.name = name
             self.plantDescription = plantDescription
@@ -26,6 +29,8 @@ final class PlantEntity {
             self.wateringInterval = wateringInterval
             self.imageUrl = imageUrl
         self.isAdded = isAdded
+        self.birthDate = birthDate
+        self.lastWateringDate = lastWateringDate
     }
     
     /**

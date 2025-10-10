@@ -21,7 +21,10 @@ struct GardenRepository: GardenRepositoryProtocol {
     }
     
     func addPlant(plant: Plant) -> Bool {
-        let entity = PlantMapper.toEntity(model: plant)
+        var newPlant = plant
+        newPlant.birthDate = Date()
+        
+        let entity = PlantMapper.toEntity(model: newPlant)
         return gardenDataSource.addPlant(entity)
     }
 }

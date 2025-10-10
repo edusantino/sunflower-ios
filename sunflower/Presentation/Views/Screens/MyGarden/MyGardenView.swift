@@ -25,8 +25,8 @@ struct MyGardenView: View {
 
 #Preview {
     MyGardenView(plants: [
-        Plant(plantId: "1", name: "Apple Tree", description: "Description 1", growZoneNumber: 12, wateringInterval: 3, imageUrl: ""),
-        Plant(plantId: "2", name: "Rose Bush", description: "Description 2", growZoneNumber: 12, wateringInterval: 3, imageUrl: ""),
-        Plant(plantId: "3", name: "Cactus", description: "Description 3", growZoneNumber: 12, wateringInterval: 3, imageUrl: "")
+        Plant(plantId: "1", name: "Apple Tree", description: "Description 1", growZoneNumber: 12, wateringInterval: 3, imageUrl: "", birthDate: Date(), lastWateringDate: Date()),
+        Plant(plantId: "2", name: "Rose Bush", description: "Description 2", growZoneNumber: 12, wateringInterval: 3, imageUrl: "", birthDate: Date(), lastWateringDate: Date()),
+        Plant(plantId: "3", name: "Cactus", description: "Description 3", growZoneNumber: 12, wateringInterval: 3, imageUrl: "", birthDate: Date(), lastWateringDate: Date())
     ])
 }

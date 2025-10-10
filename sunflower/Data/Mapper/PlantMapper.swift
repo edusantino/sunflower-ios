@@ -5,6 +5,8 @@
 //  Created by Eduardo Santino Campos on 09/10/25.
 //
 
+import Foundation
+
 struct PlantMapper {
     static func toDomain(entity: PlantEntity) -> Plant {
         return Plant(
@@ -13,7 +15,9 @@ struct PlantMapper {
             description: entity.plantDescription,
             growZoneNumber: entity.growZoneNumber,
             wateringInterval: entity.wateringInterval,
-            imageUrl: entity.imageUrl
+            imageUrl: entity.imageUrl,
+            birthDate: entity.birthDate,
+            lastWateringDate: entity.lastWateringDate
         )
     }
     
@@ -22,7 +26,9 @@ struct PlantMapper {
             plantId: model.plantId,
             name: model.name,
             plantDescription: model.description,
-            growZoneNumber: model.growZoneNumber
+            growZoneNumber: model.growZoneNumber,
+            birthDate: model.birthDate,
+            lastWateringDate: model.lastWateringDate
         )
     }
 }

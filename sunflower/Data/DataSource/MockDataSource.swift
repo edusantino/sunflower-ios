@@ -5,6 +5,8 @@
 //  Created by Eduardo Santino Campos on 08/10/25.
 //
 
+import Foundation
+
 struct MockDataSource {
     func fetchAll() async throws -> [Plant] {
         print("📦 Loading data from: MockedData")
@@ -15,7 +17,9 @@ struct MockDataSource {
                 description: "Default Description",
                 growZoneNumber: 4,
                 wateringInterval: 2,
-                imageUrl: "No Image"
+                imageUrl: "No Image",
+                birthDate: Date(),
+                lastWateringDate: Date()
             )
         ]
     }
@@ -27,7 +31,9 @@ struct MockDataSource {
             description: "Default Description",
             growZoneNumber: 4,
             wateringInterval: 2,
-            imageUrl: "No Image"
+            imageUrl: "No Image",
+            birthDate: Date(),
+            lastWateringDate: Date()
         )
     }
     

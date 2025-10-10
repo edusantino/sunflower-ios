@@ -9,49 +9,102 @@ import SwiftUI
 
 struct MyGardenItem: View {
     let plant: Plant
-
+    
+    // MARK: - Constants
+    private enum Constants {
+        static let cardWidth: CGFloat = 140
+        static let imageHeight: CGFloat = 80
+        static let cardHeight: CGFloat = 220
+        static let cornerRadius: CGFloat = 8
+        static let titleMinHeight: CGFloat = 40
+    }
+    
+    // MARK: - Colors
+    private struct Colors {
+        static let primaryText = Color(red: 220/255, green: 231/255, blue: 216/255)
+        static let cardBackground = Color(red: 64/255, green: 74/255, blue: 56/255)
+        static let whiteBackground = Color.white
+    }
+    
     var body: some View {
         VStack(spacing: 0) {
-            Image("avocado")
-                .resizable()
-                .scaledToFill()
-                .frame(width: 140, height: 80)
-                .clipped()
-                .cornerRadius(8, corners: [.topRight])
-            
-            VStack {
-                Text("Apple")
-                    .frame(maxWidth: .infinity, minHeight: 40)
-                    .font(.system(size: 16, weight: .bold))
-                    .foregroundStyle(Color(red: 220/255, green: 231/255, blue: 216/255))
-                
-                Text("Planted")
-                    .font(.system(size: 12, weight: .bold))
-                    .foregroundStyle(Color(red: 220/255, green: 231/255, blue: 216/255))
-                Text("Sep 28, 2025")
-                    .font(.system(size: 10, weight: .regular))
-                    .foregroundStyle(Color(red: 220/255, green: 231/255, blue: 216/255))
-                    .padding(.bottom, 5)
-                
-                Text("Last Watered")
-                    .font(.system(size: 12, weight: .bold))
-                    .foregroundStyle(Color(red: 220/255, green: 231/255, blue: 216/255))
-                Text("Sep 28, 2025")
-                    .font(.system(size: 10, weight: .regular))
-                    .foregroundStyle(Color(red: 220/255, green: 231/255, blue: 216/255))
-                Text("water in 30 days.")
-                    .font(.system(size: 10, weight: .regular))
-                    .foregroundStyle(Color(red: 220/255, green: 231/255, blue: 216/255))
-                    .padding(.bottom, 15)
-            }
-            .background(Color(red: 64/255, green: 74/255, blue: 56/255))
-            .cornerRadius(8, corners: [.bottomLeft])
+            plantImage
+            plantDetails
         }
-        .frame(width: 140, height: 220)
-        .background(Color.white)
-        .cornerRadius(8, corners: [.topRight, .bottomLeft])
+        .frame(width: Constants.cardWidth, height: Constants.cardHeight)
+        .background(Colors.whiteBackground)
+        .cornerRadius(Constants.cornerRadius, corners: [.topRight, .bottomLeft])
+        .compositingGroup()
+        .shadow(color: .black.opacity(0.2), radius: 2, x: 0, y: 1)
+    }
+    
+    // MARK: - Subviews
+    private var plantImage: some View {
+        AsyncImage(url: URL(string: plant.imageUrl)) { phase in
+            switch phase {
+            case .empty:
+                placeholderImage
+            case .success(let image):
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+            case .failure:
+                placeholderImage
+            @unknown default:
+                placeholderImage
+            }
+        }
+        .frame(width: Constants.cardWidth, height: Constants.imageHeight)
+        .clipped()
+        .cornerRadius(Constants.cornerRadius, corners: [.topRight])
+    }
+    
+    private var placeholderImage: some View {
+        Image("avocado")
+            .resizable()
+            .scaledToFill()
+            .frame(width: Constants.cardWidth, height: Constants.imageHeight)
+    }
+    
+    private var plantDetails: some View {
+        VStack(spacing: 4) {
+            Text(plant.name)
+                .frame(maxWidth: .infinity, minHeight: Constants.titleMinHeight)
+                .font(.system(size: 16, weight: .bold))
+                .foregroundStyle(Colors.primaryText)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 4)
+            
+            detailSection(title: "Planted", value: plant.plantedDate)
+            detailSection(title: "Last Watered", value: plant.lastWatering)
+            
+            Text("water in \(plant.wateringInterval) days.")
+                .font(.system(size: 10, weight: .regular))
+                .foregroundStyle(Colors.primaryText)
+                .padding(.top, 4)
+                .padding(.bottom, 10)
+        }
+        .padding(.horizontal, 8)
+        .frame(maxWidth: .infinity)
+        .background(Colors.cardBackground)
+        .cornerRadius(Constants.cornerRadius, corners: [.bottomLeft])
+    }
+    
+    private func detailSection(title: String, value: String) -> some View {
+        VStack(spacing: 2) {
+            Text(title)
+                .font(.system(size: 12, weight: .bold))
+                .foregroundStyle(Colors.primaryText)
+            
+            Text(value)
+                .font(.system(size: 10, weight: .regular))
+                .foregroundStyle(Colors.primaryText)
+        }
     }
 }
+
 #Preview {
     MyGardenItem(plant: .mock)
+        .padding()
+        .background(Color.gray.opacity(0.1))
 }
