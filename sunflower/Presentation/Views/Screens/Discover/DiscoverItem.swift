@@ -17,7 +17,7 @@ struct DiscoverItem: View {
         static let imageHeight: CGFloat = 80
         static let cardHeight: CGFloat = 130
         static let cornerRadius: CGFloat = 8
-        static let titleMinHeight: CGFloat = 40
+        static let titleMinHeight: CGFloat = 24
     }
     
     // MARK: - Colors
@@ -74,7 +74,7 @@ struct DiscoverItem: View {
     
     private var plantTitle: some View {
         Text(plant.name)
-            .frame(maxWidth: .infinity, minHeight: 60)
+            .frame(maxWidth: .infinity, minHeight: 50)
             .font(.system(size: 16, weight: .bold))
             .foregroundStyle(Color(red: 220/255, green: 231/255, blue: 216/255))
             .background(Color(red: 64/255, green: 74/255, blue: 56/255))
