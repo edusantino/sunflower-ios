@@ -11,25 +11,18 @@ struct DiscoverView: View {
     let onAddPlant: (Plant) -> Void
     let plants: [Plant]
     
-    // MARK: - Constants
-    private enum Constants {
-        static let columns = [GridItem(.flexible()), GridItem(.flexible())]
-        static let spacing: CGFloat = 12
-        static let padding: CGFloat = 16
-    }
-    
     private var backgroundColor: Color {
-        Color(red: 26/255, green: 28/255, blue: 24/255)
+        Color(Colors.defaultBackground)
     }
     
     var body: some View {
         ScrollView {
-            LazyVGrid(columns: Constants.columns, spacing: Constants.spacing) {
+            LazyVGrid(columns: Dimen.columns, spacing: Dimen.spacing) {
                 ForEach(plants) { plant in
                     DiscoverItem(onAddItem: onAddPlant, plant: plant)
                 }
             }
-            .padding(Constants.padding)
+            .padding(Dimen.padding)
         }
         .background(backgroundColor)
     }

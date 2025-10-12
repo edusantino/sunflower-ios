@@ -14,4 +14,8 @@ enum Dimen {
     static let cardHeight: CGFloat = 220
     static let cornerRadius: CGFloat = 8
     static let titleMinHeight: CGFloat = 40
+    
+    static let columns = [GridItem(.flexible()), GridItem(.flexible())]
+    static let spacing: CGFloat = 12
+    static let padding: CGFloat = 16
 }

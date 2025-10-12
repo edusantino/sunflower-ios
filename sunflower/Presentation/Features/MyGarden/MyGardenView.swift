@@ -19,7 +19,7 @@ struct MyGardenView: View {
             }
             .padding()
         }
-        .background(Color(red: 26/255, green: 28/255, blue: 24/255))
+        .background(Colors.defaultBackground)
     }
 }
 
