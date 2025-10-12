@@ -7,67 +7,44 @@
 
 import SwiftData
 import Foundation
+import OSLog
 
+// MARK: - Main Data Source
 struct PlantDataSource: PlantDataSourceProtocol {
+    private let plantLoader: PlantLoadingStrategy
+    private let logger = Logger(subsystem: "GardenApp", category: "PlantDataSource")
     
-    func getPlantDetails(id: String) async throws -> Plant { // Mude para String
-            let plants = try await fetchFromJSONFile()
-            guard let plant = plants.first(where: { $0.id == id }) else {
-                throw NSError(domain: "PlantNotFound", code: 404, userInfo: [NSLocalizedDescriptionKey: "Plant with id \(id) not found"])
-            }
-            return plant
-        }
-    
-
-    func fetchFromJSONFile() async throws -> [Plant] {
-        print("📦 Loading data from: JSON File")
-        print("🔍 Searching for plants.json in bundle...")
-        
-        guard let url = Bundle.main.url(forResource: "plants", withExtension: "json") else {
-            print("❌ File plants.json NOT found in bundle!")
-            if let bundleURLs = Bundle.main.urls(forResourcesWithExtension: "json", subdirectory: nil) {
-                print("📁 Files JSON in bundle: \(bundleURLs.map { $0.lastPathComponent })")
-            }
-            throw URLError(.fileDoesNotExist)
-        }
-        
-        print("✅ File found: \(url.path)")
-        
-        do {
-            let data = try Data(contentsOf: url)
-            print("📦 File size: \(data.count) bytes")
-            
-            // Decode process
-            let plants = try JSONDecoder().decode([Plant].self, from: data)
-            print("🌱 Number of decoded plants: \(plants.count)")
-            return plants
-            
-        } catch let decodingError as DecodingError {
-            print("❌ Error on decodification: \(decodingError)")
-            throw decodingError
-        } catch {
-            print("❌ Other error: \(error)")
-            throw error
-        }
+    // MARK: - Init com Strategy
+    init(plantLoader: PlantLoadingStrategy = JSONPlantLoader()) {
+        self.plantLoader = plantLoader
     }
     
-    func fetchFromJSONString(json: String) async throws -> [Plant] {
-        print("📦 Loading data from: Firebase")
-        do {
-            guard let jsonData = json.data(using: .utf8) else {
-                throw NSError(domain: "JSONError", code: 1, userInfo: [NSLocalizedDescriptionKey: "Failed to convert string to Data"])
-            }
-            
-            let plants = try JSONDecoder().decode([Plant].self, from: jsonData)
-            print("🌱 Number of decoded plants: \(plants.count)")
-            return plants
-            
-        } catch let decodingError as DecodingError {
-            print("❌ Error on decodification: \(decodingError)")
-            throw decodingError
-        } catch {
-            print("❌ Other error: \(error)")
-            throw error
+    // MARK: - Public Methods
+    func getPlantDetails(id: String) async throws -> Plant {
+        logger.info("🔍 Fetching plant details for ID: \(id)")
+        
+        let plants = try await plantLoader.loadPlants()
+        guard let plant = plants.first(where: { $0.id == id }) else {
+            logger.error("❌ Plant not found with ID: \(id)")
+            throw PlantDataSourceError.plantNotFound(id: id)
         }
+        
+        logger.info("✅ Found plant: \(plant.name)")
+        return plant
+    }
+}
+
+// MARK: - Usage Examples
+extension PlantDataSource {
+    // Para testes
+    static func makeForTesting(plants: [Plant]) -> PlantDataSource {
+        let mockLoader = MockPlantLoader(plants: plants)
+        return PlantDataSource(plantLoader: mockLoader)
+    }
+    
+    // Para Firebase
+    static func makeForFirebase(jsonString: String) -> PlantDataSource {
+        let firebaseLoader = FirebasePlantLoader(jsonString: jsonString)
+        return PlantDataSource(plantLoader: firebaseLoader)
     }
 }
