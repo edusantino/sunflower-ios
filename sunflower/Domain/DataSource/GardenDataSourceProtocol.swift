@@ -6,8 +6,8 @@
 //
 
 protocol GardenDataSourceProtocol {
-    func addPlant(_ entity: PlantEntity) -> Bool
-    func deletePlant(_ entity: PlantEntity) -> Bool
-    func updatePlant(_ entity: PlantEntity) -> Bool
+    func addPlant(_ entity: PlantEntity) throws
+    func deletePlant(_ entity: PlantEntity) throws
+    func updatePlant(_ entity: PlantEntity) throws
     func fetchAllPlants() throws -> [PlantEntity]
 }
