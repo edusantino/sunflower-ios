@@ -10,30 +10,14 @@ import SwiftUI
 struct MyGardenItem: View {
     let plant: Plant
     
-    // MARK: - Constants
-    private enum Constants {
-        static let cardWidth: CGFloat = 140
-        static let imageHeight: CGFloat = 80
-        static let cardHeight: CGFloat = 220
-        static let cornerRadius: CGFloat = 8
-        static let titleMinHeight: CGFloat = 40
-    }
-    
-    // MARK: - Colors
-    private struct Colors {
-        static let primaryText = Color(red: 220/255, green: 231/255, blue: 216/255)
-        static let cardBackground = Color(red: 64/255, green: 74/255, blue: 56/255)
-        static let whiteBackground = Color.white
-    }
-    
     var body: some View {
         VStack(spacing: 0) {
             plantImage
             plantDetails
         }
-        .frame(width: Constants.cardWidth, height: Constants.cardHeight)
+        .frame(width: Dimen.cardWidth, height: Dimen.cardHeight)
         .background(Colors.whiteBackground)
-        .cornerRadius(Constants.cornerRadius, corners: [.topRight, .bottomLeft])
+        .cornerRadius(Dimen.cornerRadius, corners: [.topRight, .bottomLeft])
         .compositingGroup()
         .shadow(color: .black.opacity(0.2), radius: 2, x: 0, y: 1)
     }
@@ -54,22 +38,22 @@ struct MyGardenItem: View {
                 placeholderImage
             }
         }
-        .frame(width: Constants.cardWidth, height: Constants.imageHeight)
+        .frame(width: Dimen.cardWidth, height: Dimen.imageHeight)
         .clipped()
-        .cornerRadius(Constants.cornerRadius, corners: [.topRight])
+        .cornerRadius(Dimen.cornerRadius, corners: [.topRight])
     }
     
     private var placeholderImage: some View {
         Image("avocado")
             .resizable()
             .scaledToFill()
-            .frame(width: Constants.cardWidth, height: Constants.imageHeight)
+            .frame(width: Dimen.cardWidth, height: Dimen.imageHeight)
     }
     
     private var plantDetails: some View {
         VStack(spacing: 4) {
             Text(plant.name)
-                .frame(maxWidth: .infinity, minHeight: Constants.titleMinHeight)
+                .frame(maxWidth: .infinity, minHeight: Dimen.titleMinHeight)
                 .font(.system(size: 16, weight: .bold))
                 .foregroundStyle(Colors.primaryText)
                 .multilineTextAlignment(.center)
@@ -87,7 +71,7 @@ struct MyGardenItem: View {
         .padding(.horizontal, 8)
         .frame(maxWidth: .infinity)
         .background(Colors.cardBackground)
-        .cornerRadius(Constants.cornerRadius, corners: [.bottomLeft])
+        .cornerRadius(Dimen.cornerRadius, corners: [.bottomLeft])
     }
     
     private func detailSection(title: String, value: String) -> some View {
