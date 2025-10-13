@@ -1,4 +1,4 @@
-🌻 Sunflower iOS (TODO)
+🌻 Sunflower iOS (WIP)
 A recreation of Google's Sunflower app for iOS, developed in SwiftUI following Apple's best development practices.
 
 📱 About the Project
