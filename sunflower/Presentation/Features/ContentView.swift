@@ -11,8 +11,8 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     
-    @StateObject private var myGardenViewModel: MyGardenViewModel
     @StateObject private var viewModel: ContentViewModel
+    @StateObject private var coordinator: AppCoordinator
     
     @State private var selectedTab = 0
     
