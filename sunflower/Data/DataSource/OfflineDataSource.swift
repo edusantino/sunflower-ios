@@ -32,6 +32,15 @@ struct PlantDataSource: PlantDataSourceProtocol {
         logger.info("✅ Found plant: \(plant.name)")
         return plant
     }
+    
+    func getPlantList() async throws -> [Plant] {
+        logger.info("🔍 Fetching plat list")
+        
+        let plants = try await plantLoader.loadPlants()
+        
+        logger.info("✅ Fetching completed!")
+        return plants
+    }
 }
 
 // MARK: - Usage Examples

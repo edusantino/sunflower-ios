@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct DiscoverItem: View {
-    let onAddItem: (Plant) -> ()
     let plant: Plant
     
     // MARK: - Constants
@@ -29,9 +28,7 @@ struct DiscoverItem: View {
     
     var body: some View {
         NavigationLink {
-            PlantDetailsView(onAddPlant: { plant in
-                onAddItem(plant)
-            }, plant: plant)
+            PlantDetailsView(plant: plant)
         } label: {
             VStack(spacing: 0) {
                 plantImage
@@ -82,5 +79,5 @@ struct DiscoverItem: View {
 }
 
 #Preview {
-    DiscoverItem(onAddItem: { _ in }, plant: .mock)
+    DiscoverItem(plant: .mock)
 }

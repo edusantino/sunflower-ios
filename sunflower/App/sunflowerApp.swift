@@ -25,20 +25,17 @@ struct sunflowerApp: App {
     }()
     
     private var compositionRoot: CompositionRoot!
+    private var coordinator: AppCoordinator
     
     init() {
         FirebaseApp.configure()
-        self.compositionRoot = CompositionRoot()
+        self.compositionRoot = CompositionRoot(modelContainer: sharedModelContainer)
+        self.coordinator = AppCoordinator()
     }
 
     var body: some Scene {
         WindowGroup {
-            ContentView(
-                plantListViewModel: compositionRoot.makePlantListViewModel(),
-                myGardenViewModel: compositionRoot.makeMyGardenViewModel(
-                    modelContext: sharedModelContainer.mainContext
-                )
-            )
+            compositionRoot.makeContentView()
         }
         .modelContainer(sharedModelContainer)
     }

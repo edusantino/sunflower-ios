@@ -12,23 +12,27 @@ struct TabButton: View {
     let isSelected: Bool
     let iconName: String
     let action: () -> Void
-
+    
     var body: some View {
         Button(action: action) {
-            VStack(spacing: 8) {
+            VStack(spacing: DesignSystem.Spacing.small) {
                 Image(systemName: iconName)
-                    .font(.system(size: 24))
-                    .foregroundColor(.white)
+                    .font(DesignSystem.Fonts.icon)
+                    .foregroundColor(DesignSystem.Colors.primaryText)
                 
                 Text(title)
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(isSelected ? .white : .gray)
+                    .font(DesignSystem.Fonts.tabTitle)
+                    .foregroundColor(isSelected ? DesignSystem.Colors.primaryText : DesignSystem.Colors.tabInactive)
                 
                 Rectangle()
-                    .fill(isSelected ? Color(red: 157/255, green: 216/255, blue: 117/255) : Color.clear)
+                    .fill(isSelected ? DesignSystem.Colors.tabColor : Color.clear)
                     .frame(height: 2)
+                    .animation(.easeInOut(duration: 0.2), value: isSelected)
             }
         }
         .frame(maxWidth: .infinity)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(title) tab")
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }

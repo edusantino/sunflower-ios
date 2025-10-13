@@ -8,6 +8,7 @@
 import Foundation
 
 enum PlantLoadingError: LocalizedError {
+    
     case fileNotFound(fileName: String)
     case fileLoadFailed(Error)
     case decodingFailed(DecodingError)

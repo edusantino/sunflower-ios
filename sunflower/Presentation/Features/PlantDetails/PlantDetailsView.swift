@@ -9,10 +9,11 @@ import SwiftUI
 import Foundation
 
 struct PlantDetailsView: View {
-    let onAddPlant: (Plant) -> Void
-    let plant: Plant
-    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var viewModel: ContentViewModel
+    @EnvironmentObject private var coordinator: AppCoordinator
+    
     @State private var showShareSheet = false
+    let plant: Plant
     
     // MARK: - Constants
     private enum Constants {
@@ -24,10 +25,6 @@ struct PlantDetailsView: View {
         static let topPadding: CGFloat = 20
     }
     
-    private var backgroundColor: Color {
-        Color(red: 26/255, green: 28/255, blue: 24/255)
-    }
-    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
@@ -35,11 +32,14 @@ struct PlantDetailsView: View {
                 plantDetailsSection
             }
         }
-        .background(backgroundColor)
+        .background(DesignSystem.Colors.background)
         .ignoresSafeArea(edges: .top)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar { toolbarContent }
         .sheet(isPresented: $showShareSheet) { shareSheet }
+        .onAppear {
+            print("✅ Environment carregado: \(viewModel)")
+        }
     }
 }
 
@@ -64,8 +64,14 @@ private extension PlantDetailsView {
             .frame(maxWidth: .infinity, maxHeight: Constants.imageHeight)
             .clipped()
             
-            AddButton(isAdded: plant.isAdded, onTap: addPlant)
-                .padding(16)
+            AddButton(isAdded: plant.isAdded, onAddPlant: {
+                Task {
+                    var updatedPlant = plant
+                    updatedPlant.isAdded = true
+                    viewModel.send(.addPlant(updatedPlant))
+                    coordinator.showToast("Planta adicionada!")
+                }
+            })
         }
         .frame(maxWidth: .infinity, maxHeight: Constants.imageHeight)
     }
@@ -128,12 +134,6 @@ private extension PlantDetailsView {
 
 // MARK: - Private Methods
 private extension PlantDetailsView {
-    func addPlant() {
-        var updatedPlant = plant
-        updatedPlant.isAdded = true
-        onAddPlant(updatedPlant)
-    }
-    
     var shareItems: [Any] {
         [
             "Confira esta planta incrível: \(plant.name)",
@@ -174,14 +174,13 @@ struct ShareSheet: UIViewControllerRepresentable {
 #Preview {
     NavigationView {
         PlantDetailsView(
-            onAddPlant: { _ in },
             plant: Plant(
                 plantId: "1",
                 name: "Apple Tree",
                 description: "Uma árvore frutífera que produz maçãs deliciosas. Requer cuidado regular e poda anual para manter sua saúde e produtividade.",
                 growZoneNumber: 12,
                 wateringInterval: 3,
-                imageUrl: "",
+                imageUrl: "https://upload.wikimedia.org/wikipedia/commons/e/e4/Branch_and_fruit_of_the_Maluma_avocado_cultivar.jpg",
                 birthDate: Date(),
                 lastWateringDate: Date()
             )

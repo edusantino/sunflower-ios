@@ -20,12 +20,12 @@ struct GardenRepository: GardenRepositoryProtocol {
         return entities.map { PlantMapper.toDomain(entity: $0) }
     }
     
-    func addPlant(plant: Plant) -> Bool {
+    func addPlant(plant: Plant) throws {
         var newPlant = plant
         newPlant.birthDate = Date()
         newPlant.lastWateringDate = Date()
         
         let entity = PlantMapper.toEntity(model: newPlant)
-        return gardenDataSource.addPlant(entity)
+        return try gardenDataSource.addPlant(entity)
     }
 }

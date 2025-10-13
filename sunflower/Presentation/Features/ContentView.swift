@@ -11,76 +11,128 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     
-    @StateObject var plantListViewModel: PlantListViewModel
     @StateObject private var myGardenViewModel: MyGardenViewModel
+    @StateObject private var viewModel: ContentViewModel
     
     @State private var selectedTab = 0
     
-    init(plantListViewModel: PlantListViewModel,
-         myGardenViewModel: MyGardenViewModel) {
-        _plantListViewModel = StateObject(wrappedValue: plantListViewModel)
-        _myGardenViewModel = StateObject(wrappedValue: myGardenViewModel)
+    init(viewModel: ContentViewModel,
+         coordinator: AppCoordinator) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+        _coordinator = StateObject(wrappedValue: coordinator)
     }
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $coordinator.navigationPath) {
             VStack(spacing: 0) {
-                HStack {
-                    Spacer()
-                    Text("My Garden")
-                        .font(.system(size: 32, weight: .bold))
-                        .foregroundColor(.white)
-                    Spacer()
-                    Image(systemName: "line.horizontal.3.decrease")
-                        .font(.system(size: 24))
-                        .foregroundColor(.white)
-                }
-                .padding(.horizontal)
-                .padding(.top, 60)
-                .padding(.bottom, 20)
-                .background(Color(red: 26/255, green: 28/255, blue: 24/255))
-                
-                // Custom tabs
-                HStack(spacing: 0) {
-                    TabButton(title: "My Plants", isSelected: selectedTab == 0, iconName: "camera.macro") {
-                        selectedTab = 0
-                    }
-                    
-                    TabButton(title: "Discover", isSelected: selectedTab == 1, iconName: "leaf.fill") {
-                        selectedTab = 1
-                    }
-                }
-                .padding(.horizontal)
-                .background(Color(red: 26/255, green: 28/255, blue: 24/255))
-                
-                // Tab content
-                TabView(selection: $selectedTab) {
-                    if myGardenViewModel.plants.isEmpty {
-                        EmptyGardenView(selectedTab: $selectedTab)
-                            .tag(0)
-                    } else {
-                        MyGardenView(plants: myGardenViewModel.plants)
-                            .tag(0)
-                    }
-                    
-                    DiscoverView(onAddPlant: { plant in
-                        myGardenViewModel.addPlant(plant: plant)
-                    }, plants: plantListViewModel.plants)
-                        .tag(1)
-                        .onAppear {
-                            if plantListViewModel.plants.isEmpty {
-                                Task {
-                                    await plantListViewModel.loadPlants()
-                                }
-                            }
-                        }
-                }
-                .tabViewStyle(.page(indexDisplayMode: .never))
+                headerView
+                tabBarView
+                tabContentView
             }
-            .ignoresSafeArea()
-            .onAppear(perform: {
-                myGardenViewModel.loadGarden()
-            })
+            .onAppear {
+                Task { await viewModel.loadInitialData() }
+            }
+            .onChange(of: viewModel.state) { _, newState in
+                reactToStateChanges(newState)
+            }
+        }
+    }
+}
+
+// MARK: - Subviews
+private extension ContentView {
+    var headerView: some View {
+        HStack {
+            Spacer()
+            Text("My Garden")
+                .font(DesignSystem.Fonts.title)
+                .foregroundColor(DesignSystem.Colors.primaryText)
+            Spacer()
+            
+            Button(action: { viewModel.send(.showFilters) }) {
+                Image(systemName: "line.horizontal.3.decrease")
+                    .font(DesignSystem.Fonts.icon)
+                    .foregroundColor(DesignSystem.Colors.primaryText)
+            }
+        }
+        .padding(.horizontal, DesignSystem.Spacing.large)
+        .padding(.top, DesignSystem.Spacing.topSafeArea)
+        .padding(.bottom, DesignSystem.Spacing.medium)
+        .background(DesignSystem.Colors.background)
+    }
+    
+    var tabBarView: some View {
+        HStack(spacing: 0) {
+            ForEach(ContentViewModel.Tab.allCases) { tab in
+                TabButton(
+                    title: tab.title,
+                    isSelected: viewModel.selectedTab == tab,
+                    iconName: tab.iconName
+                ) {
+                    viewModel.send(.selectTab(tab))
+                }
+            }
+        }
+        .padding(.horizontal, DesignSystem.Spacing.large)
+        .background(DesignSystem.Colors.background)
+    }
+    
+    var tabContentView: some View {
+        TabView(selection: $viewModel.selectedTab) {
+            myGardenTab
+                .tag(ContentViewModel.Tab.myGarden)
+            
+            discoverTab
+                .tag(ContentViewModel.Tab.discover)
+        }
+        .tabViewStyle(.page(indexDisplayMode: .never))
+        .animation(.easeInOut(duration: 0.25), value: viewModel.selectedTab)
+    }
+    
+    var myGardenTab: some View {
+        Group {
+            if viewModel.myGardenPlants.isEmpty {
+                // EmptyGardenView currently requires a Binding<Int>; adjust your EmptyGardenView or provide a mapping binding if needed.
+                // Placeholder: show a button to switch to Discover via viewModel action.
+                VStack {
+                    EmptyGardenView(selectedTab: .constant(0)) // Temporary to match current API
+                    Button {
+                        viewModel.send(.selectTab(.discover))
+                    } label: {
+                        Text("Discover plants")
+                    }
+                    .padding(.top, DesignSystem.Spacing.medium)
+                }
+            } else {
+                MyGardenView(plants: viewModel.myGardenPlants)
+            }
+        }
+    }
+    
+    var discoverTab: some View {
+        DiscoverView(
+            onAddPlant: { plant in
+                viewModel.send(.addPlant(plant))
+            },
+            plants: viewModel.availablePlants
+        )
+    }
+}
+
+// MARK: - State Reaction
+private extension ContentView {
+    func reactToStateChanges(_ state: ContentViewModel.State) {
+        switch state {
+        case .idle:
+            break
+        case .plantAdded(let plant):
+            coordinator.showToast("🌱 \(plant.name) added to your garden!")
+        case .navigateToPlantDetails(let plant):
+            coordinator.navigateToPlantDetails(plant)
+        case .showFilters:
+            coordinator.showSheet(.filters)
+        case .error(let message):
+            coordinator.showAlert(title: "Error", message: message)
         }
     }
 }

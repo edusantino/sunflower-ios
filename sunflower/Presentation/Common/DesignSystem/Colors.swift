@@ -13,4 +13,5 @@ struct Colors {
     static let cardBackground = Color(red: 64/255, green: 74/255, blue: 56/255)
     static let whiteBackground = Color.white
     static let defaultBackground = Color(red: 26/255, green: 28/255, blue: 24/255)
+    static let tabColor = Color(red: 157/255, green: 216/255, blue: 117/255)
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Plant: Codable, Identifiable {
+struct Plant: Codable, Identifiable, Hashable, Equatable {
     var id: String { plantId }
     var isAdded: Bool = false
     var plantId: String

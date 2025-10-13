@@ -20,14 +20,14 @@ struct PlantRepository: PlantRepositoryProtocol {
         let result = remoteConfig.getString(forKey: "plant_discover")
         if !result.isEmpty {
             do {
-                let plants = try await plantDataSource.fetchFromJSONString(json: result)
+                let plants = try await plantDataSource.getPlantList()
                 return plants
             } catch {
                 print("Failed to fetch from JSON string: \(error)")
             }
         }
         do {
-            let plants = try await plantDataSource.fetchFromJSONFile()
+            let plants = try await plantDataSource.getPlantList()
             return plants
         } catch {
             print("Failed to fetch from JSON file: \(error)")
