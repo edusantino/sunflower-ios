@@ -14,7 +14,6 @@ struct PlantDetailsView: View {
     
     @State private var isAdded: Bool = false
     @State private var showToast: Bool = false
-    @State private var showSuccessCheck = false
     @State private var showShareSheet = false
     let plant: Plant
     
@@ -166,7 +165,6 @@ private extension PlantDetailsView {
                 withAnimation {
                     showToast = false
                 }
-                coordinator.navigateBack()
             }
             viewModel.send(.resetState)
             

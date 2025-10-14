@@ -26,7 +26,7 @@ enum DesignSystem {
         static let small: CGFloat = 8
         static let medium: CGFloat = 16
         static let large: CGFloat = 20
-        static let topSafeArea: CGFloat = 60
+        static let topSafeArea: CGFloat = 10
     }
     
 }
