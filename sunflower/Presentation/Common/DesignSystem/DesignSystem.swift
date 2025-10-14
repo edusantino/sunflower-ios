@@ -13,7 +13,8 @@ enum DesignSystem {
         static let background = Color(red: 26/255, green: 28/255, blue: 24/255)
         static let primaryText = Color.white
         static let tabColor = Color.green
-        static let tabInactive = Color.gray
+        static let tabInactive = Color.white
+        static let tabActive = Color.green
     }
     
     enum Fonts {
