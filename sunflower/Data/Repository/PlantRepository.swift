@@ -23,7 +23,7 @@ struct PlantRepository: PlantRepositoryProtocol {
                 let plants = try await plantDataSource.getPlantList()
                 return plants
             } catch {
-                print("Failed to fetch from JSON string: \(error)")
+                print("Failed to fetch from FIREBASE: \(error)")
             }
         }
         do {

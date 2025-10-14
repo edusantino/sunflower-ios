@@ -9,13 +9,9 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    
     @StateObject private var viewModel: ContentViewModel
     @StateObject private var coordinator: AppCoordinator
-    
-    @State private var selectedTab = 0
-    
+        
     init(viewModel: ContentViewModel,
          coordinator: AppCoordinator) {
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -87,21 +83,16 @@ private extension ContentView {
         }
         .tabViewStyle(.page(indexDisplayMode: .never))
         .animation(.easeInOut(duration: 0.25), value: viewModel.selectedTab)
+        .ignoresSafeArea()
     }
     
     var myGardenTab: some View {
         Group {
             if viewModel.myGardenPlants.isEmpty {
-                // EmptyGardenView currently requires a Binding<Int>; adjust your EmptyGardenView or provide a mapping binding if needed.
-                // Placeholder: show a button to switch to Discover via viewModel action.
                 VStack {
-                    EmptyGardenView(selectedTab: .constant(0)) // Temporary to match current API
-                    Button {
+                    EmptyGardenView(onAddClick: {
                         viewModel.send(.selectTab(.discover))
-                    } label: {
-                        Text("Discover plants")
-                    }
-                    .padding(.top, DesignSystem.Spacing.medium)
+                    })
                 }
             } else {
                 MyGardenView(plants: viewModel.myGardenPlants)
@@ -110,12 +101,7 @@ private extension ContentView {
     }
     
     var discoverTab: some View {
-        DiscoverView(
-            onAddPlant: { plant in
-                viewModel.send(.addPlant(plant))
-            },
-            plants: viewModel.availablePlants
-        )
+        DiscoverView(plants: viewModel.availablePlants)
     }
 }
 

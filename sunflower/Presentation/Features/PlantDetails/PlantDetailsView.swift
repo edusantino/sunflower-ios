@@ -12,6 +12,8 @@ struct PlantDetailsView: View {
     @EnvironmentObject private var viewModel: ContentViewModel
     @EnvironmentObject private var coordinator: AppCoordinator
     
+    @State private var isAdded: Bool = false
+    @State private var showSuccessCheck = false
     @State private var showShareSheet = false
     let plant: Plant
     
@@ -64,16 +66,15 @@ private extension PlantDetailsView {
             .frame(maxWidth: .infinity, maxHeight: Constants.imageHeight)
             .clipped()
             
-            AddButton(isAdded: plant.isAdded, onAddPlant: {
+            AddButton(isAdded: $isAdded) {
                 Task {
-                    var updatedPlant = plant
-                    updatedPlant.isAdded = true
-                    viewModel.send(.addPlant(updatedPlant))
-                    coordinator.showToast("Planta adicionada!")
+                    viewModel.send(.addPlant(plant))
                 }
-            })
+            }
         }
-        .frame(maxWidth: .infinity, maxHeight: Constants.imageHeight)
+        .onChange(of: viewModel.state) { _, newState in
+            handleState(newState)
+        }
     }
     
     var placeholderImage: some View {
@@ -139,6 +140,29 @@ private extension PlantDetailsView {
             "Confira esta planta incrível: \(plant.name)",
             URL(string: "https://meuapp.com/plants/\(plant.plantId)") ?? URL(string: "https://meuapp.com")!
         ]
+    }
+}
+
+private extension PlantDetailsView {
+    private func handleState(_ state: ContentViewModel.State) {
+        switch state {
+        case .plantAdded(let plant):
+            coordinator.showToast("Planta \(plant.name) adicionada com sucesso!")
+            withAnimation {
+                isAdded = true
+            }
+            Task {
+                try? await Task.sleep(nanoseconds: 2_000_000_000) // 2 segundos
+                coordinator.navigateBack()
+            }
+            viewModel.send(.resetState)
+            
+        case .error(let message):
+            coordinator.showToast("Erro: \(message)")
+            
+        default:
+            break
+        }
     }
 }
 

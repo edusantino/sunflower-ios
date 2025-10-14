@@ -16,6 +16,7 @@ final class AppCoordinator: ObservableObject {
     @Published var presentedSheet: Sheet?
     @Published var alert: AlertItem?
     @Published var toast: ToastItem?
+    @Published var toastMessage: String?
     
     private let logger = Logger(subsystem: "GardenApp", category: "AppCoordinator")
     
@@ -40,7 +41,10 @@ final class AppCoordinator: ObservableObject {
     }
     
     func showToast(_ message: String, duration: Double = 3.0) {
-        toast = ToastItem(message: message, duration: duration)
+        toastMessage = message
+        DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
+            self.toastMessage = nil
+        }
     }
     
     func showSheet(_ sheet: Sheet) {

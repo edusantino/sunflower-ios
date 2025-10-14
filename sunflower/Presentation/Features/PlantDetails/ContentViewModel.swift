@@ -37,6 +37,7 @@ final class ContentViewModel: ObservableObject {
         case addPlant(Plant)
         case showPlantDetails(Plant)
         case showFilters
+        case resetState
     }
     
     enum Tab: CaseIterable, Identifiable {
@@ -85,6 +86,8 @@ final class ContentViewModel: ObservableObject {
             state = .navigateToPlantDetails(plant)
         case .showFilters:
             state = .showFilters
+        case .resetState:
+            state = .idle
         }
     }
     

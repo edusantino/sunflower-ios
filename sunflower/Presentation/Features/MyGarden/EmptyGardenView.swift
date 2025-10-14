@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct EmptyGardenView: View {
-    @Binding var selectedTab: Int
+    let onAddClick: () -> Void
     
     var body: some View {
         VStack {
@@ -17,7 +17,7 @@ struct EmptyGardenView: View {
                 .foregroundColor(.white)
             
             Button {
-                selectedTab = 1
+                onAddClick()
             } label: {
                 HStack {
                     Text("Add plant")
@@ -44,5 +44,5 @@ struct EmptyGardenView: View {
 }
 
 #Preview {
-    EmptyGardenView(selectedTab: .constant(0))
+    EmptyGardenView(onAddClick: {})
 }

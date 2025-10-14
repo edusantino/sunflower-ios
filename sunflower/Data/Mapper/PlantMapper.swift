@@ -27,8 +27,8 @@ struct PlantMapper {
             name: model.name,
             plantDescription: model.description,
             growZoneNumber: model.growZoneNumber,
-            birthDate: model.birthDate,
-            lastWateringDate: model.lastWateringDate
+            birthDate: model.birthDate ?? Date(),
+            lastWateringDate: model.lastWateringDate ?? Date()
         )
     }
 }

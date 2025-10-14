@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct AddButton: View {
-    let isAdded: Bool
-    let onAddPlant: () -> Void
+    @Binding var isAdded: Bool
+    let onAdd: () -> Void
     
     var body: some View {
         Button(action: {
-            onAddPlant()
+            onAdd()
         }) {
             Image(systemName: isAdded ? "checkmark" : "plus")
                 .foregroundColor(Color.white)
@@ -39,5 +39,5 @@ struct AddButton: View {
 }
 
 #Preview {
-    AddButton(isAdded: false, onAddPlant: {})
+    AddButton(isAdded: .constant(true), onAdd: { })
 }

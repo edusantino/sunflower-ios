@@ -34,7 +34,7 @@ struct PlantDataSource: PlantDataSourceProtocol {
     }
     
     func getPlantList() async throws -> [Plant] {
-        logger.info("🔍 Fetching plat list")
+        logger.info("🔍 Fetching plant list")
         
         let plants = try await plantLoader.loadPlants()
         
