@@ -13,6 +13,7 @@ struct PlantDetailsView: View {
     @EnvironmentObject private var coordinator: AppCoordinator
     
     @State private var isAdded: Bool = false
+    @State private var showToast: Bool = false
     @State private var showSuccessCheck = false
     @State private var showShareSheet = false
     let plant: Plant
@@ -39,8 +40,20 @@ struct PlantDetailsView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar { toolbarContent }
         .sheet(isPresented: $showShareSheet) { shareSheet }
-        .onAppear {
-            print("✅ Environment carregado: \(viewModel)")
+        .onChange(of: viewModel.state) { _, newState in
+            handleState(newState)
+        }
+        .overlay(alignment: .top) {
+            if showToast {
+                HStack {
+                    Image(systemName: "checkmark.circle.fill")
+                    Text("Planta adicionada!")
+                }
+                .padding()
+                .background(.ultraThinMaterial)
+                .cornerRadius(12)
+                .transition(.move(edge: .top).combined(with: .opacity))
+            }
         }
     }
 }
@@ -71,9 +84,6 @@ private extension PlantDetailsView {
                     viewModel.send(.addPlant(plant))
                 }
             }
-        }
-        .onChange(of: viewModel.state) { _, newState in
-            handleState(newState)
         }
     }
     
@@ -146,13 +156,16 @@ private extension PlantDetailsView {
 private extension PlantDetailsView {
     private func handleState(_ state: ContentViewModel.State) {
         switch state {
-        case .plantAdded(let plant):
-            coordinator.showToast("Planta \(plant.name) adicionada com sucesso!")
+        case .plantAdded(_):
             withAnimation {
                 isAdded = true
+                showToast = true
             }
             Task {
-                try? await Task.sleep(nanoseconds: 2_000_000_000) // 2 segundos
+                try? await Task.sleep(nanoseconds: 2_000_000_000)
+                withAnimation {
+                    showToast = false
+                }
                 coordinator.navigateBack()
             }
             viewModel.send(.resetState)

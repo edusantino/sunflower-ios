@@ -20,6 +20,7 @@ struct GardenDataSource: GardenDataSourceProtocol {
 
 extension GardenDataSource {
     func addPlant(_ entity: PlantEntity) throws {
+        modelContext.insert(entity)
         try saveContext()
         logger.info("✅ Plant added: \(entity.name)")
     }
