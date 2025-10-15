@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct MyGardenItem: View {
-    @EnvironmentObject private var coordinator: AppCoordinator
+    @EnvironmentObject private var viewModel: ContentViewModel
     let plant: Plant
     
     var body: some View {
         Button {
-            coordinator.navigateToPlantDetails(plant)
+             viewModel.send(.showPlantDetails(plant))
         } label: {
             VStack(spacing: 0) {
                 plantImage

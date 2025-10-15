@@ -31,6 +31,24 @@ struct ContentView: View {
             .onChange(of: viewModel.state) { _, newState in
                 reactToStateChanges(newState)
             }
+            .navigationDestination(for: AppCoordinator.Route.self) { route in
+                switch route {
+                case .garden:
+                    MyGardenView(plants: viewModel.availablePlants)
+                        .environmentObject(viewModel)
+                        .environmentObject(coordinator)
+                    
+                case .discover:
+                    DiscoverView(plants: viewModel.availablePlants)
+                        .environmentObject(viewModel)
+                        .environmentObject(coordinator)
+                    
+                case .plantDetails(let plant):
+                    PlantDetailsView(plant: plant)
+                        .environmentObject(viewModel)
+                        .environmentObject(coordinator)
+                }
+            }
         }
     }
 }
