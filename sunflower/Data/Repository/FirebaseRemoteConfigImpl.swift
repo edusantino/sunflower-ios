@@ -13,7 +13,6 @@ final class FirebaseRemoteConfigImpl: ConfigRepository {
 
     init() {
         self.remoteConfig = RemoteConfig.remoteConfig()
-        // Set default values - CRUCIAL para quando o fetch falha ou não foi feito
         let defaultValues: [String: Any] = [
             "feature_plants": true,
             "feature_garden": true,

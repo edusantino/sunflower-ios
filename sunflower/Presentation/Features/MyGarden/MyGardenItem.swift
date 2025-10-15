@@ -8,18 +8,24 @@
 import SwiftUI
 
 struct MyGardenItem: View {
+    @EnvironmentObject private var coordinator: AppCoordinator
     let plant: Plant
     
     var body: some View {
-        VStack(spacing: 0) {
-            plantImage
-            plantDetails
+        Button {
+            coordinator.navigateToPlantDetails(plant)
+        } label: {
+            VStack(spacing: 0) {
+                plantImage
+                plantDetails
+            }
+            .frame(width: Dimen.cardWidth, height: Dimen.cardHeight)
+            .background(Colors.whiteBackground)
+            .cornerRadius(Dimen.cornerRadius, corners: [.topRight, .bottomLeft])
+            .compositingGroup()
+            .shadow(color: .black.opacity(0.2), radius: 2, x: 0, y: 1)
         }
-        .frame(width: Dimen.cardWidth, height: Dimen.cardHeight)
-        .background(Colors.whiteBackground)
-        .cornerRadius(Dimen.cornerRadius, corners: [.topRight, .bottomLeft])
-        .compositingGroup()
-        .shadow(color: .black.opacity(0.2), radius: 2, x: 0, y: 1)
+        .buttonStyle(.plain)
     }
     
     // MARK: - Subviews
