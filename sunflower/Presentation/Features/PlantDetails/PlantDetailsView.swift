@@ -12,10 +12,16 @@ struct PlantDetailsView: View {
     @EnvironmentObject private var viewModel: ContentViewModel
     @EnvironmentObject private var coordinator: AppCoordinator
     
-    @State private var isAdded: Bool = false
+    @State private var isAdded: Bool
     @State private var showToast: Bool = false
     @State private var showShareSheet = false
     let plant: Plant
+    
+    // Custom initializer to seed @State from the incoming plant
+    init(plant: Plant) {
+        self.plant = plant
+        _isAdded = State(initialValue: plant.isAdded)
+    }
     
     // MARK: - Constants
     private enum Constants {
@@ -80,7 +86,9 @@ private extension PlantDetailsView {
             
             AddButton(isAdded: $isAdded) {
                 Task {
-                    viewModel.send(.addPlant(plant))
+                    var newPlant = plant
+                    newPlant.isAdded = true
+                    viewModel.send(.addPlant(newPlant))
                 }
             }
         }

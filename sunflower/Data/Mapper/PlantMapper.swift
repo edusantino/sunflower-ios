@@ -10,6 +10,7 @@ import Foundation
 struct PlantMapper {
     static func toDomain(entity: PlantEntity) -> Plant {
         return Plant(
+            isAdded: entity.isAdded,
             plantId: entity.plantId,
             name: entity.name,
             description: entity.plantDescription,
@@ -27,9 +28,11 @@ struct PlantMapper {
             name: model.name,
             plantDescription: model.description,
             growZoneNumber: model.growZoneNumber,
+            wateringInterval: model.wateringInterval,
             imageUrl: model.imageUrl,
+            isAdded: model.isAdded,
             birthDate: model.birthDate ?? Date(),
-            lastWateringDate: model.lastWateringDate ?? Date(),
+            lastWateringDate: model.lastWateringDate ?? Date()
         )
     }
 }
