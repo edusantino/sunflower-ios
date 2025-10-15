@@ -52,6 +52,7 @@ struct PlantDetailsView: View {
             if showToast {
                 HStack {
                     Image(systemName: "checkmark.circle.fill")
+                        .foregroundColor(Color(DesignSystem.Colors.tabActive))
                     Text("Planta adicionada!")
                 }
                 .padding()
