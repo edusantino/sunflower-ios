@@ -23,7 +23,3 @@ MVVM - Architectural pattern
 iOS 16.0+ - Minimum supported version
 
 <img width="360" height="682" alt="image" src="https://github.com/user-attachments/assets/91cdf8f7-5398-4c60-89d7-ed048e9ead65" />
-
-Demo:
-
-https://github.com/user-attachments/assets/2d32d479-54da-493e-817d-fd4700427fca
