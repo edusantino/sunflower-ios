@@ -19,7 +19,8 @@ final class PlantEntity {
     var isAdded: Bool = false
     var birthDate: Date = Date()
     var lastWateringDate: Date = Date()
-    
+    @Attribute(.rawValue) var wateringLevel: WateringLevel = .regular
+
     init(plantId: String, name: String, plantDescription: String, growZoneNumber: Int,
          wateringInterval: Int = 7, imageUrl: String = "", isAdded: Bool = false, birthDate: Date, lastWateringDate: Date) {
             self.plantId = plantId
@@ -31,6 +32,7 @@ final class PlantEntity {
         self.isAdded = isAdded
         self.birthDate = birthDate
         self.lastWateringDate = lastWateringDate
+        self.wateringLevel = .regular
     }
     
     /**
@@ -38,11 +40,17 @@ final class PlantEntity {
      * watering + watering Interval; false otherwise.
      * */
     func shouldBeWatered(since: Date, lastWateringDate: Date) -> Bool {
-            guard let nextWateringDate = Calendar.current.date(
-                byAdding: .day,
-                value: wateringInterval,
-                to: lastWateringDate
-            ) else { return false }
-            return since > nextWateringDate
-        }
+        guard let nextWateringDate = Calendar.current.date(
+            byAdding: .day,
+            value: wateringInterval,
+            to: lastWateringDate
+        ) else { return false }
+        return since > nextWateringDate
+    }
+}
+
+enum WateringLevel: String, Codable {
+    case regular
+    case warning
+    case danger
 }

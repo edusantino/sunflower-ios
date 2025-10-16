@@ -16,8 +16,9 @@ struct Plant: Codable, Identifiable, Hashable, Equatable {
     var growZoneNumber: Int
     var wateringInterval: Int
     var imageUrl: String
-    var birthDate: Date? // Tornar opcional
-    var lastWateringDate: Date? // Tornar opcional
+    var wateringLevel: WateringLevel = .regular
+    var birthDate: Date? = Date()
+    var lastWateringDate: Date? = Date()
     
     enum CodingKeys: String, CodingKey {
         case plantId, name, description, growZoneNumber, wateringInterval, imageUrl, birthDate, lastWateringDate
@@ -27,7 +28,7 @@ struct Plant: Codable, Identifiable, Hashable, Equatable {
 extension Plant {
     static var mock: Plant {
         Plant(
-            plantId: "12", name: "Apple Tree", description: "This is a long description about Apple Tree", growZoneNumber: 12, wateringInterval: 3, imageUrl: "", birthDate: Date(), lastWateringDate: Date()
+            plantId: "12", name: "Apple Tree", description: "This is a long description about Apple Tree", growZoneNumber: 12, wateringInterval: 3, imageUrl: "", wateringLevel: .warning, birthDate: Date(), lastWateringDate: Date()
         )
     }
     static var mockList: [Plant] {
@@ -66,4 +67,8 @@ extension Plant {
         return formatter.string(from: birthDate ?? Date())
     }
     
+}
+
+enum WateringLevel {
+    case regular, warning, danger
 }

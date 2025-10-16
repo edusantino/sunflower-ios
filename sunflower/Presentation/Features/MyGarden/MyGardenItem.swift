@@ -20,7 +20,11 @@ struct MyGardenItem: View {
                 plantDetails
             }
             .frame(width: Dimen.cardWidth, height: Dimen.cardHeight)
-            .background(Colors.whiteBackground)
+            .background(
+                plant.wateringLevel == .regular ? DesignSystem.Colors.regularLevel
+                : plant.wateringLevel == .warning ? DesignSystem.Colors.warningLevel
+                : DesignSystem.Colors.dangerLevel
+            )
             .cornerRadius(Dimen.cornerRadius, corners: [.topRight, .bottomLeft])
             .compositingGroup()
             .shadow(color: .black.opacity(0.2), radius: 2, x: 0, y: 1)

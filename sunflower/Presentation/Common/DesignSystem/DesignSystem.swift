@@ -16,6 +16,9 @@ enum DesignSystem {
         static let tabColor = Color.green
         static let tabInactive = Color.white
         static let tabActive = Color.green
+        static let regularLevel = Color.white
+        static let warningLevel =  Color.yellow
+        static let dangerLevel = Color.red
     }
     
     enum Fonts {
