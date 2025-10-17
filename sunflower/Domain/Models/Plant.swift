@@ -17,8 +17,8 @@ struct Plant: Codable, Identifiable, Hashable, Equatable {
     var wateringInterval: Int
     var imageUrl: String
     var wateringLevel: WateringLevel = .regular
-    var birthDate: Date? = Date()
-    var lastWateringDate: Date? = Date()
+    var birthDate: Date
+    var lastWateringDate: Date
     
     enum CodingKeys: String, CodingKey {
         case plantId, name, description, growZoneNumber, wateringInterval, imageUrl, birthDate, lastWateringDate
@@ -35,36 +35,18 @@ extension Plant {
         [mock, mock, mock]
     }
     
-    func needsWatering(_ plant: Plant) -> Bool {
-        let today = Date()
-        guard let daysSincePlanted = Calendar.current.dateComponents(
-            [.day], from: plant.lastWateringDate ?? Date(), to: today).day else { return false }
-        return daysSincePlanted > plant.wateringInterval
-    }
-    
-    var nextWatering: String {
-        guard let nextDate = Calendar.current.date(byAdding: .day, value: wateringInterval, to: lastWateringDate ?? Date()) else {
-            return "Date not available"
-        }
-        
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd MMM"
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        return formatter.string(from: nextDate)
-    }
-    
     var lastWatering: String {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd MMM, yyyy"
         formatter.locale = Locale(identifier: "en_US_POSIX")
-        return formatter.string(from: lastWateringDate ?? Date())
+        return formatter.string(from: lastWateringDate)
     }
     
     var plantedDate: String {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd MMM, yyyy"
         formatter.locale = Locale(identifier: "en_US_POSIX")
-        return formatter.string(from: birthDate ?? Date())
+        return formatter.string(from: birthDate)
     }
     
 }

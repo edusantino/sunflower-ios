@@ -32,10 +32,9 @@ struct PlantMapper {
             wateringInterval: model.wateringInterval,
             imageUrl: model.imageUrl,
             isAdded: model.isAdded,
-            birthDate: model.birthDate ?? Date(),
-            lastWateringDate: model.lastWateringDate ?? Date(),
+            birthDate: model.birthDate,
+            lastWateringDate: model.lastWateringDate,
             wateringLevel: model.wateringLevel.rawValue
         )
     }
 }
-

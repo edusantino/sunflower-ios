@@ -17,8 +17,8 @@ final class PlantEntity {
     var wateringInterval: Int
     var imageUrl: String
     var isAdded: Bool = false
-    var birthDate: Date = Date()
-    var lastWateringDate: Date = Date()
+    var birthDate: Date
+    var lastWateringDate: Date
     var wateringLevel: String = ""
 
     init(plantId: String, name: String, plantDescription: String, growZoneNumber: Int,
