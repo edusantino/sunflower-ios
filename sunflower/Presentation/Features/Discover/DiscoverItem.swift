@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct DiscoverItem: View {
     let plant: Plant
@@ -43,30 +44,27 @@ struct DiscoverItem: View {
     
     // MARK: - Subviews
     private var plantImage: some View {
-        AsyncImage(url: URL(string: plant.imageUrl)) { phase in
-            switch phase {
-            case .empty:
-                placeholderImage
-            case .success(let image):
-                image
+        KFImage(URL(string: plant.imageUrl))
+            .placeholder {
+                Image("avocado")
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
-            case .failure:
-                placeholderImage
-            @unknown default:
-                placeholderImage
+                    .scaledToFill()
+                    .frame(width: Constants.cardWidth, height: Constants.imageHeight)
             }
-        }
-        .frame(width: Constants.cardWidth, height: Constants.imageHeight)
-        .clipped()
-        .cornerRadius(Constants.cornerRadius, corners: [.topRight])
-    }
-    
-    private var placeholderImage: some View {
-        Image("avocado")
+            .onProgress { receivedSize, totalSize in
+                print("Loading progress: \(receivedSize)/\(totalSize)")
+            }
+            .onSuccess { result in
+                print("Image loaded successfully: \(result.source.url?.absoluteString ?? "")")
+            }
+            .onFailure { error in
+                print("Failed to load image: \(error)")
+            }
             .resizable()
-            .scaledToFill()
+            .aspectRatio(contentMode: .fill)
             .frame(width: Constants.cardWidth, height: Constants.imageHeight)
+            .clipped()
+            .cornerRadius(Constants.cornerRadius, corners: [.topRight])
     }
     
     private var plantTitle: some View {

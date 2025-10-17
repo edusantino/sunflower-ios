@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct MyGardenItem: View {
     @EnvironmentObject private var viewModel: ContentViewModel
@@ -34,30 +35,27 @@ struct MyGardenItem: View {
     
     // MARK: - Subviews
     private var plantImage: some View {
-        AsyncImage(url: URL(string: plant.imageUrl)) { phase in
-            switch phase {
-            case .empty:
-                placeholderImage
-            case .success(let image):
-                image
+        KFImage(URL(string: plant.imageUrl))
+            .placeholder {
+                Image("avocado")
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
-            case .failure:
-                placeholderImage
-            @unknown default:
-                placeholderImage
+                    .scaledToFill()
+                    .frame(width: Dimen.cardWidth, height: Dimen.imageHeight)
             }
-        }
-        .frame(width: Dimen.cardWidth, height: Dimen.imageHeight)
-        .clipped()
-        .cornerRadius(Dimen.cornerRadius, corners: [.topRight])
-    }
-    
-    private var placeholderImage: some View {
-        Image("avocado")
+            .onProgress { receivedSize, totalSize in
+                print("Loading progress: \(receivedSize)/\(totalSize)")
+            }
+            .onSuccess { result in
+                print("Image loaded successfully: \(result.source.url?.absoluteString ?? "")")
+            }
+            .onFailure { error in
+                print("Failed to load image: \(error)")
+            }
             .resizable()
-            .scaledToFill()
+            .aspectRatio(contentMode: .fill)
             .frame(width: Dimen.cardWidth, height: Dimen.imageHeight)
+            .clipped()
+            .cornerRadius(Dimen.cornerRadius, corners: [.topRight])
     }
     
     private var plantDetails: some View {
