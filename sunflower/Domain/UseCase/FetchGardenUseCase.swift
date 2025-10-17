@@ -19,8 +19,7 @@ struct FetchGardenUseCase {
         let currentDate = Date()
         
         return plants.map { plant in
-            var updatedPlant = plant
-            let wateringLevel: WateringLevel
+            let updatedPlant = plant
             
             guard let lastWatering = plant.lastWateringDate else {
                 return updatedPlant
@@ -31,16 +30,25 @@ struct FetchGardenUseCase {
             
             let progress = daysSinceLastWatering / Double(plant.wateringInterval)
             
-            switch progress {
+            let wateringLevel = switch progress {
             case 0...0.5:
-                wateringLevel = .regular
+                WateringLevel.regular
             case 0.5...0.8:
-                wateringLevel = .warning
+                WateringLevel.warning
             default:
-                wateringLevel = .danger
+                WateringLevel.danger
             }
             
-            return Plant(isAdded: plant.isAdded, plantId: plant.plantId, name: plant.name, description: plant.description, growZoneNumber: plant.growZoneNumber, wateringInterval: plant.wateringInterval, imageUrl: plant.imageUrl, wateringLevel: wateringLevel)
+            return Plant(
+                isAdded: plant.isAdded,
+                plantId: plant.plantId,
+                name: plant.name,
+                description: plant.description,
+                growZoneNumber: plant.growZoneNumber,
+                wateringInterval: plant.wateringInterval,
+                imageUrl: plant.imageUrl,
+                wateringLevel: wateringLevel
+            )
         }
     }
     
