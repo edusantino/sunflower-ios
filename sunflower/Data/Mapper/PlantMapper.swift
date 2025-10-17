@@ -17,7 +17,7 @@ struct PlantMapper {
             growZoneNumber: entity.growZoneNumber,
             wateringInterval: entity.wateringInterval,
             imageUrl: entity.imageUrl,
-            wateringLevel: entity.wateringLevel,
+            wateringLevel: WateringLevel(rawValue: entity.wateringLevel) ?? .regular,
             birthDate: entity.birthDate,
             lastWateringDate: entity.lastWateringDate
         )
@@ -32,9 +32,10 @@ struct PlantMapper {
             wateringInterval: model.wateringInterval,
             imageUrl: model.imageUrl,
             isAdded: model.isAdded,
-            wateringLevel: model.wateringLevel,
             birthDate: model.birthDate ?? Date(),
-            lastWateringDate: model.lastWateringDate ?? Date()
+            lastWateringDate: model.lastWateringDate ?? Date(),
+            wateringLevel: model.wateringLevel.rawValue
         )
     }
 }
+

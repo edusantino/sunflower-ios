@@ -17,7 +17,6 @@ struct PlantDetailsView: View {
     @State private var showShareSheet = false
     let plant: Plant
     
-    // Custom initializer to seed @State from the incoming plant
     init(plant: Plant) {
         self.plant = plant
         _isAdded = State(initialValue: plant.isAdded)

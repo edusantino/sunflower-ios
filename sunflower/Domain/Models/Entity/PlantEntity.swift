@@ -19,10 +19,10 @@ final class PlantEntity {
     var isAdded: Bool = false
     var birthDate: Date = Date()
     var lastWateringDate: Date = Date()
-    @Attribute(.rawValue) var wateringLevel: WateringLevel = .regular
+    var wateringLevel: String = ""
 
     init(plantId: String, name: String, plantDescription: String, growZoneNumber: Int,
-         wateringInterval: Int = 7, imageUrl: String = "", isAdded: Bool = false, birthDate: Date, lastWateringDate: Date) {
+         wateringInterval: Int = 7, imageUrl: String = "", isAdded: Bool = false, birthDate: Date, lastWateringDate: Date, wateringLevel: String = "") {
             self.plantId = plantId
             self.name = name
             self.plantDescription = plantDescription
@@ -32,7 +32,7 @@ final class PlantEntity {
         self.isAdded = isAdded
         self.birthDate = birthDate
         self.lastWateringDate = lastWateringDate
-        self.wateringLevel = .regular
+        self.wateringLevel = wateringLevel
     }
     
     /**
@@ -47,10 +47,4 @@ final class PlantEntity {
         ) else { return false }
         return since > nextWateringDate
     }
-}
-
-enum WateringLevel: String, Codable {
-    case regular
-    case warning
-    case danger
 }

@@ -69,6 +69,9 @@ extension Plant {
     
 }
 
-enum WateringLevel {
-    case regular, warning, danger
+enum WateringLevel: String, Codable, CaseIterable, Equatable, Hashable {
+    case regular
+    case warning
+    case danger
 }
+
