@@ -19,7 +19,9 @@ struct FetchGardenUseCase {
         let currentDate = Date()
         
         return plants.map { plant in
-            let lastWatering = plant.lastWateringDate
+            guard let lastWatering = plant.lastWateringDate else {
+                return plant
+            }
             
             let secondsSinceLastWatering = currentDate.timeIntervalSince(lastWatering)
             let daysSinceLastWatering = secondsSinceLastWatering / (60 * 60 * 24)

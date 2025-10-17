@@ -17,12 +17,12 @@ final class PlantEntity {
     var wateringInterval: Int
     var imageUrl: String
     var isAdded: Bool = false
-    var birthDate: Date
-    var lastWateringDate: Date
+    var birthDate: Date?
+    var lastWateringDate: Date?
     var wateringLevel: String = ""
 
     init(plantId: String, name: String, plantDescription: String, growZoneNumber: Int,
-         wateringInterval: Int = 7, imageUrl: String = "", isAdded: Bool = false, birthDate: Date, lastWateringDate: Date, wateringLevel: String = "") {
+         wateringInterval: Int = 7, imageUrl: String = "", isAdded: Bool = false, birthDate: Date?, lastWateringDate: Date?, wateringLevel: String = "") {
             self.plantId = plantId
             self.name = name
             self.plantDescription = plantDescription

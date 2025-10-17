@@ -17,8 +17,8 @@ struct Plant: Codable, Identifiable, Hashable, Equatable {
     var wateringInterval: Int
     var imageUrl: String
     var wateringLevel: WateringLevel = .regular
-    var birthDate: Date
-    var lastWateringDate: Date
+    var birthDate: Date?
+    var lastWateringDate: Date?
     
     enum CodingKeys: String, CodingKey {
         case plantId, name, description, growZoneNumber, wateringInterval, imageUrl, birthDate, lastWateringDate
@@ -39,13 +39,22 @@ extension Plant {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd MMM, yyyy"
         formatter.locale = Locale(identifier: "en_US_POSIX")
-        return formatter.string(from: lastWateringDate)
+        
+        guard let lastWatering = self.lastWateringDate else {
+            return "never watered"
+        }
+        return formatter.string(from: lastWatering)
     }
     
     var plantedDate: String {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd MMM, yyyy"
         formatter.locale = Locale(identifier: "en_US_POSIX")
+        
+        guard let birthDate = self.birthDate else {
+            return "no data"
+        }
+        
         return formatter.string(from: birthDate)
     }
     
