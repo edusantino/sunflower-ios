@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Foundation
+import Kingfisher
 
 struct PlantDetailsView: View {
     @EnvironmentObject private var viewModel: ContentViewModel
@@ -67,22 +68,21 @@ struct PlantDetailsView: View {
 private extension PlantDetailsView {
     var plantImageSection: some View {
         ZStack(alignment: .bottomTrailing) {
-            AsyncImage(url: URL(string: plant.imageUrl)) { phase in
-                switch phase {
-                case .empty:
-                    placeholderImage
-                case .success(let image):
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                case .failure:
-                    placeholderImage
-                @unknown default:
+            KFImage(URL(string: plant.imageUrl))
+                .placeholder {
                     placeholderImage
                 }
-            }
-            .frame(maxWidth: .infinity, maxHeight: Constants.imageHeight)
-            .clipped()
+                .onProgress { receivedSize, totalSize in
+                    print("Loading progress: \(receivedSize)/\(totalSize)")
+                }
+                .onSuccess { result in
+                    print("Image loaded successfully: \(result.source.url?.absoluteString ?? "")")
+                }
+                .onFailure { error in
+                    print("Failed to load image: \(error)")
+                }
+                .frame(maxWidth: .infinity, maxHeight: Constants.imageHeight)
+                .clipped()
             
             AddButton(isAdded: $isAdded) {
                 Task {
