@@ -24,6 +24,7 @@ struct sunflowerApp: App {
         }
     }()
     
+    @State private var showSplash: Bool = true
     private var compositionRoot: CompositionRoot!
     private var coordinator: AppCoordinator
     
@@ -35,7 +36,18 @@ struct sunflowerApp: App {
 
     var body: some Scene {
         WindowGroup {
-            compositionRoot.makeContentView()
+            if showSplash {
+                SplashView()
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            withAnimation {
+                                showSplash = false
+                            }
+                        }
+                    }
+            } else {
+                compositionRoot.makeContentView()
+            }
         }
         .modelContainer(sharedModelContainer)
     }

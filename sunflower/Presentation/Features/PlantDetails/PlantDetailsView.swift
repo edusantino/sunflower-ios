@@ -36,7 +36,7 @@ struct PlantDetailsView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                plantImageSection
+                PlantImageSection()
                 plantDetailsSection
             }
         }
@@ -66,7 +66,7 @@ struct PlantDetailsView: View {
 
 // MARK: - Subviews
 private extension PlantDetailsView {
-    var plantImageSection: some View {
+    func PlantImageSection() -> some View {
         ZStack(alignment: .bottomTrailing) {
             KFImage(URL(string: plant.imageUrl))
                 .placeholder {
@@ -81,6 +81,8 @@ private extension PlantDetailsView {
                 .onFailure { error in
                     print("Failed to load image: \(error)")
                 }
+                .resizable()
+                .aspectRatio(contentMode: .fill)
                 .frame(maxWidth: .infinity, maxHeight: Constants.imageHeight)
                 .clipped()
             
@@ -212,21 +214,4 @@ struct ShareSheet: UIViewControllerRepresentable {
     }
     
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
-}
-
-#Preview {
-    NavigationView {
-        PlantDetailsView(
-            plant: Plant(
-                plantId: "1",
-                name: "Apple Tree",
-                description: "Uma árvore frutífera que produz maçãs deliciosas. Requer cuidado regular e poda anual para manter sua saúde e produtividade.",
-                growZoneNumber: 12,
-                wateringInterval: 3,
-                imageUrl: "https://upload.wikimedia.org/wikipedia/commons/e/e4/Branch_and_fruit_of_the_Maluma_avocado_cultivar.jpg",
-                birthDate: Date(),
-                lastWateringDate: Date()
-            )
-        )
-    }
 }
