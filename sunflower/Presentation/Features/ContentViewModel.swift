@@ -12,9 +12,11 @@ import SwiftUI
 @MainActor
 final class ContentViewModel: ObservableObject {
     @Published private(set) var state: State = .idle
+    
     @Published var selectedTab: Tab = .myGarden
     @Published private(set) var myGardenPlants: [Plant] = []
     @Published private(set) var availablePlants: [Plant] = []
+    @Published private(set) var isLoading: Bool = false
     
     private let fetchPlantsUseCase: FetchPlantsUseCase
     private let fetchGardenUseCase: FetchGardenUseCase
@@ -99,7 +101,11 @@ final class ContentViewModel: ObservableObject {
 
 // MARK: - Private Helpers
 private extension ContentViewModel {
+    
     func loadGardenPlants() async {
+        isLoading = true
+        defer { isLoading = false }
+        
         do {
             myGardenPlants = try await fetchGardenUseCase.execute()
         } catch {
@@ -109,6 +115,9 @@ private extension ContentViewModel {
     
     func loadAvailablePlants() async {
         guard availablePlants.isEmpty else { return }
+        isLoading = true
+        defer { isLoading = false}
+        
         do {
             availablePlants = try await fetchPlantsUseCase.execute()
         } catch {
@@ -117,6 +126,9 @@ private extension ContentViewModel {
     }
     
     func addPlantToGarden(_ plant: Plant) async {
+        isLoading = true
+        defer { isLoading = false}
+        
         do {
             try await addPlantUseCase.execute(plant: plant)
             myGardenPlants = try await fetchGardenUseCase.execute() // Refresh local cache

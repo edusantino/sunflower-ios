@@ -8,20 +8,31 @@
 import SwiftUI
 
 struct EmptyGardenView: View {
+    @EnvironmentObject private var viewModel: ContentViewModel
+    
     let onAddClick: () -> Void
     
     var body: some View {
         VStack {
-            Text("Your garden is empty")
-                .font(.system(size: 25))
-                .foregroundColor(.white)
-            
-            AddButton()
+            if viewModel.isLoading {
+                ProgressView()
+                    .scaleEffect(1.5)
+                    .tint(.white)
+            } else if viewModel.myGardenPlants.isEmpty {
+                Text("Your garden is empty")
+                    .font(.system(size: 25))
+                    .foregroundColor(.white)
+                
+                AddButton()
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(DesignSystem.Colors.background))
         .onAppear {
             print("Empty Garden Showing")
+        }
+        .onChange(of: viewModel.state) { isLoading in
+            
         }
     }
 }
