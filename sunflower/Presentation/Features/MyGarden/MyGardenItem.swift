@@ -17,8 +17,8 @@ struct MyGardenItem: View {
              viewModel.send(.showPlantDetails(plant))
         } label: {
             VStack(spacing: 0) {
-                plantImage
-                plantDetails
+                PlantImage()
+                PlantDetails()
             }
             .frame(width: Dimen.cardWidth, height: Dimen.cardHeight)
             .background(
@@ -34,7 +34,7 @@ struct MyGardenItem: View {
     }
     
     // MARK: - Subviews
-    private var plantImage: some View {
+    private func PlantImage() -> some View {
         KFImage(URL(string: plant.imageUrl))
             .placeholder {
                 Image("avocado")
@@ -58,7 +58,7 @@ struct MyGardenItem: View {
             .cornerRadius(Dimen.cornerRadius, corners: [.topRight])
     }
     
-    private var plantDetails: some View {
+    private func PlantDetails() -> some View {
         VStack(spacing: 4) {
             Text(plant.name)
                 .frame(maxWidth: .infinity, minHeight: Dimen.titleMinHeight)
