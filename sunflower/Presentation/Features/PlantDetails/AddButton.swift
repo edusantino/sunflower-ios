@@ -8,58 +8,84 @@
 import SwiftUI
 
 struct AddButton: View {
-    @Binding var isAdded: Bool
-    let onAdd: () async -> Void
+    let state: ButtonState
+    let action: () -> Void
     
-    @State private var isLoading = false
+    enum ButtonState {
+        case enabled
+        case loading
+        case completed
+        case disabled
+    }
     
     var body: some View {
-        ZStack {
-            Button(action: {
-                guard !isLoading, !isAdded else { return }
-                isLoading = true
-                Task {
-                    await onAdd()
-                    withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
-                        isLoading = false
-                    }
-                }
-            }) {
-                ZStack {
-                    if isLoading {
-                        ProgressView()
-                            .progressViewStyle(.circular)
-                            .tint(.white)
-                    } else {
-                        Image(systemName: isAdded ? "checkmark" : "plus")
-                            .foregroundColor(Color.white)
-                            .font(.system(size: 20, weight: .medium))
-                            .scaleEffect(isAdded ? 0.8 : 1.0)
-                            .transition(.opacity.combined(with: .scale))
-                    }
-                }
-                .frame(width: 60, height: 60)
-            }
-            .disabled(isLoading || isAdded)
-            .background(isAdded ? Color.green : Color(red: 42/255, green: 81/255, blue: 18/255))
+        Button(action: action) {
+            buttonContent
+        }
+        .disabled(!state.isEnabled)
+        .buttonStyle(AddButtonStyle(state: state))
+    }
+    
+    @ViewBuilder
+    private var buttonContent: some View {
+        switch state {
+        case .enabled, .disabled:
+            Image(systemName: "plus")
+                .foregroundColor(.white)
+                .font(.system(size: 20, weight: .medium))
+        case .loading:
+            ProgressView()
+                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+        case .completed:
+            Image(systemName: "checkmark")
+                .foregroundColor(.white)
+                .font(.system(size: 20, weight: .medium))
+                .scaleEffect(0.8)
+        }
+    }
+}
+
+// MARK: - Button Style
+struct AddButtonStyle: ButtonStyle {
+    let state: AddButton.ButtonState
+    
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .frame(width: 60, height: 60)
+            .background(backgroundColor)
             .cornerRadius(8, corners: [.topRight, .bottomLeft])
-            .overlay(
-                RoundedRectangle(cornerRadius: 8)
-                    .stroke(Color.gray, lineWidth: 0)
-                    .clipShape(
-                        RoundedCorner(
-                            radius: 8, corners: [.topRight, .bottomLeft]
-                        )
-                    )
-            )
-            .padding(.trailing, 20)
-            .offset(x: -1, y: 30)
-            .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isAdded)
+            .overlay(overlay)
+            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
+            .animation(.spring(response: 0.3, dampingFraction: 0.6), value: state)
+            .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
+    }
+    
+    private var backgroundColor: Color {
+        switch state {
+        case .enabled: return Color(red: 42/255, green: 81/255, blue: 18/255)
+        case .loading: return Color(red: 42/255, green: 81/255, blue: 18/255).opacity(0.8)
+        case .completed: return .green
+        case .disabled: return .gray
+        }
+    }
+    
+    private var overlay: some View {
+        RoundedRectangle(cornerRadius: 8)
+            .stroke(Color.gray, lineWidth: 0)
+            .clipShape(RoundedCorner(radius: 8, corners: [.topRight, .bottomLeft]))
+    }
+}
+
+// MARK: - State Extensions
+extension AddButton.ButtonState {
+    var isEnabled: Bool {
+        switch self {
+        case .enabled: return true
+        case .loading, .completed, .disabled: return false
         }
     }
 }
 
 #Preview {
-    AddButton(isAdded: .constant(false), onAdd: { })
+    AddButton(state: .loading, action: {})
 }
-

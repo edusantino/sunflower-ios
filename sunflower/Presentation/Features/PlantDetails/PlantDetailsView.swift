@@ -86,7 +86,7 @@ private extension PlantDetailsView {
                 .frame(maxWidth: .infinity, maxHeight: Constants.imageHeight)
                 .clipped()
             
-            AddButton(isAdded: $isAdded) {
+            AddButton(state: buttonState) {
                 Task {
                     var newPlant = plant
                     newPlant.isAdded = true
@@ -159,6 +159,20 @@ private extension PlantDetailsView {
             "Confira esta planta incrível: \(plant.name)",
             URL(string: "https://meuapp.com/plants/\(plant.plantId)") ?? URL(string: "https://meuapp.com")!
         ]
+    }
+}
+
+// MARK: - Button UI State
+private extension PlantDetailsView {
+    var buttonState: AddButton.ButtonState {
+        switch (plant.isAdded, viewModel.isLoading) {
+        case (true, _):
+            return .completed
+        case (false, true):
+            return .loading
+        case (false, false):
+            return .enabled
+        }
     }
 }
 
