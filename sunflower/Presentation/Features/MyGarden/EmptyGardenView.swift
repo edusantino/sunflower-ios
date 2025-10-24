@@ -8,37 +8,35 @@
 import SwiftUI
 
 struct EmptyGardenView: View {
-    @EnvironmentObject private var viewModel: ContentViewModel
-    
     let onAddClick: () -> Void
+    
+    // MARK: - Constants
+    private enum Constants {
+        static let titleFontSize: CGFloat = 25
+        static let buttonFontSize: CGFloat = 14
+        static let buttonWidth: CGFloat = 120
+        static let buttonHeight: CGFloat = 44
+        static let cornerRadius: CGFloat = 8
+    }
     
     var body: some View {
         VStack {
-            if viewModel.isLoading {
-                ProgressView()
-                    .scaleEffect(1.5)
-                    .tint(.white)
-            } else if viewModel.myGardenPlants.isEmpty {
-                Text("Your garden is empty")
-                    .font(.system(size: 25))
-                    .foregroundColor(.white)
-                
-                AddButton()
-            }
+            Text("Your garden is empty")
+                .font(.system(size: Constants.titleFontSize))
+                .foregroundColor(.white)
+            
+            addButton
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(DesignSystem.Colors.background))
         .onAppear {
             print("Empty Garden Showing")
         }
-        .onChange(of: viewModel.state) { isLoading in
-            
-        }
     }
 }
 
 extension EmptyGardenView {
-    private func AddButton() -> some View {
+    private var addButton: some View {
         Button {
             onAddClick()
         } label: {
