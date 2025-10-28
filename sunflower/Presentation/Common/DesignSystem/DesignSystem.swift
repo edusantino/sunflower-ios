@@ -35,4 +35,14 @@ enum DesignSystem {
         static let topSafeArea: CGFloat = 10
     }
     
+    enum PlantDetails {
+        // MARK: - Constants
+        static let imageHeight: CGFloat = 300
+        static let horizontalPadding: CGFloat = 16
+        static let contentSpacing: CGFloat = 12
+        static let descriptionTopPadding: CGFloat = 8
+        static let bottomPadding: CGFloat = 20
+        static let topPadding: CGFloat = 20
+    }
+    
 }
