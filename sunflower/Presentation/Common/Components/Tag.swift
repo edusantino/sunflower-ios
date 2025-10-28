@@ -11,7 +11,7 @@ struct Tag: View {
     var body: some View {
         HStack {
             Text("new")
-                .font(.system(size: 10, weight: .regular))
+                .font(.system(size: 10, weight: .bold))
                 .foregroundStyle(Color.black)
                 .padding(6)
         }

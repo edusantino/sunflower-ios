@@ -35,27 +35,32 @@ struct MyGardenItem: View {
     
     // MARK: - Subviews
     private func PlantImage() -> some View {
-        KFImage(URL(string: plant.imageUrl))
-            .placeholder {
-                Image("avocado")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: Dimen.cardWidth, height: Dimen.imageHeight)
-            }
-            .onProgress { receivedSize, totalSize in
-                print("Loading progress: \(receivedSize)/\(totalSize)")
-            }
-            .onSuccess { result in
-                print("Image loaded successfully: \(result.source.url?.absoluteString ?? "")")
-            }
-            .onFailure { error in
-                print("Failed to load image: \(error)")
-            }
-            .resizable()
-            .aspectRatio(contentMode: .fill)
-            .frame(width: Dimen.cardWidth, height: Dimen.imageHeight)
-            .clipped()
-            .cornerRadius(Dimen.cornerRadius, corners: [.topRight])
+        ZStack(alignment: .topTrailing) {
+            KFImage(URL(string: plant.imageUrl))
+                .placeholder {
+                    Image("avocado")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: Dimen.cardWidth, height: Dimen.imageHeight)
+                }
+                .onProgress { receivedSize, totalSize in
+                    print("Loading progress: \(receivedSize)/\(totalSize)")
+                }
+                .onSuccess { result in
+                    print("Image loaded successfully: \(result.source.url?.absoluteString ?? "")")
+                }
+                .onFailure { error in
+                    print("Failed to load image: \(error)")
+                }
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: Dimen.cardWidth, height: Dimen.imageHeight)
+                .clipped()
+                .cornerRadius(Dimen.cornerRadius, corners: [.topRight])
+            
+            Tag()
+                .padding(4)
+        }
     }
     
     private func PlantDetails() -> some View {
