@@ -58,7 +58,17 @@ struct MyGardenItem: View {
                 .clipped()
                 .cornerRadius(Dimen.cornerRadius, corners: [.topRight])
             
-            Tag()
+            var tagLevel: TagStatus {
+                switch plant.wateringLevel {
+                case .regular:
+                        .new
+                case .warning:
+                        .needWatering
+                case .danger:
+                        .dead
+                }
+            }
+            Tag(status: tagLevel)
                 .padding(4)
         }
     }
