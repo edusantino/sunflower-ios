@@ -64,5 +64,6 @@ enum WateringLevel: String, Codable, CaseIterable, Equatable, Hashable {
     case regular
     case warning
     case danger
+    case newPlant
 }
 

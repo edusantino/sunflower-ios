@@ -16,27 +16,30 @@ struct FetchGardenUseCase {
     
     func execute() async throws -> [Plant] {
         let plants = try repository.fetchGarden()
-        let currentDate = Date()
         
         return plants.map { plant in
             guard let lastWatering = plant.lastWateringDate else {
                 return plant
             }
+            let wateringLevel: WateringLevel
             
-            let secondsSinceLastWatering = currentDate.timeIntervalSince(lastWatering)
-            let daysSinceLastWatering = secondsSinceLastWatering / (60 * 60 * 24)
+            let norm = daysSinceLastWatering(lastWatering: lastWatering) / Double(plant.wateringInterval)
             
-            let progress = daysSinceLastWatering / Double(plant.wateringInterval)
+            let isNewPlant = daysSinceBirth(birthDate: plant.birthDate!) > 3
             
-            let wateringLevel = switch progress {
-            case 0...0.5:
-                WateringLevel.regular
-            case 0.5...0.8:
-                WateringLevel.warning
-            default:
-                WateringLevel.danger
+            if isNewPlant {
+                wateringLevel = .newPlant
+            } else {
+                wateringLevel = switch norm {
+                case ..<0.5:
+                        .regular
+                case 0.5...0.8:
+                        .warning
+                default:
+                        .danger
+                }
             }
-            
+
             return Plant(
                 isAdded: plant.isAdded,
                 plantId: plant.plantId,
@@ -50,6 +53,23 @@ struct FetchGardenUseCase {
                 lastWateringDate: plant.lastWateringDate
             )
         }
+    }
+    
+    func daysSinceBirth(birthDate: Date) -> Double {
+        let currentDay = Date()
+        let secondsSinceBirth = currentDay.timeIntervalSince(birthDate)
+        let days = secondsSinceBirth / (24 * 60 * 60)
+        
+        return days
+    }
+    
+    func daysSinceLastWatering(lastWatering: Date) -> Double {
+        let currentDate = Date()
+        
+        let secondsSinceLastWatering = currentDate.timeIntervalSince(lastWatering)
+        let days = secondsSinceLastWatering / (60 * 60 * 24)
+        
+        return days
     }
     
 }

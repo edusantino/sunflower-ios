@@ -61,11 +61,13 @@ struct MyGardenItem: View {
             var tagLevel: TagStatus {
                 switch plant.wateringLevel {
                 case .regular:
-                        .new
+                        .regular
                 case .warning:
                         .needWatering
                 case .danger:
                         .dead
+                case .new:
+                        .newPlant
                 }
             }
             Tag(status: tagLevel)

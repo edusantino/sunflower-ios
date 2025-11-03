@@ -11,7 +11,7 @@ struct Tag: View {
     let status: TagStatus
     let size: TagSize
     
-    init(status: TagStatus, size: TagSize = .medium) {
+    init(status: TagStatus, size: TagSize = .small) {
         self.status = status
         self.size = size
     }
@@ -34,7 +34,7 @@ struct Tag: View {
             )
         case .needWatering:
             return TagConfiguration(
-                text: "Must be watering",
+                text: "Needed",
                 backgroundColor: .orange.opacity(0.9),
                 textColor: .white,
                 icon: "drop"
@@ -85,7 +85,7 @@ struct Tag: View {
 // MARK: - Supporting Types
 
 enum TagStatus {
-    case new, dead, needWatering
+    case new, dead, needWatering, regular
 }
 
 enum TagSize {
