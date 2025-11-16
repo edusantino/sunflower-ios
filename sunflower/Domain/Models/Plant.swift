@@ -16,9 +16,27 @@ struct Plant: Codable, Identifiable, Hashable, Equatable {
     var growZoneNumber: Int
     var wateringInterval: Int
     var imageUrl: String
-    var wateringLevel: WateringLevel = .regular
     var birthDate: Date?
     var lastWateringDate: Date?
+    var wateringLevel: WateringLevel {
+        let isNewPlant = checkIfIsNew()
+        
+        let percentInterval = daysSinceLastWatering(lastWatering: self.lastWateringDate) / Double(self.wateringInterval)
+        
+        if isNewPlant {
+            return .newPlant
+        } else {
+            return switch percentInterval {
+            case ..<0.5:
+                    .regular
+            case 0.5...0.8:
+                    .warning
+            default:
+                    .danger
+            }
+        }
+    }
+    
     
     enum CodingKeys: String, CodingKey {
         case plantId, name, description, growZoneNumber, wateringInterval, imageUrl, birthDate, lastWateringDate
@@ -56,6 +74,22 @@ extension Plant {
         }
         
         return formatter.string(from: birthDate)
+    }
+    
+    private func checkIfIsNew() -> Bool {
+        let currentDate = Date()
+        let days = currentDate.timeIntervalSince(self.birthDate!)
+        
+        return days > 2
+    }
+    
+    private func daysSinceLastWatering(lastWatering: Date) -> Double {
+        let currentDate = Date()
+        
+        let secondsSinceLastWatering = currentDate.timeIntervalSince(lastWatering)
+        let days = secondsSinceLastWatering / (60 * 60 * 24)
+        
+        return days
     }
     
 }
