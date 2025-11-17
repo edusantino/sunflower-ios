@@ -14,12 +14,10 @@ final class ContentViewModel: ObservableObject {
     @Published private(set) var state: State = .idle
     
     @Published var selectedTab: Tab = .myGarden
-    @Published private(set) var myGardenPlants: [Plant] = []
     @Published private(set) var availablePlants: [Plant] = []
     @Published private(set) var isLoading: Bool = false
     
     private let fetchPlantsUseCase: FetchPlantsUseCase
-    private let fetchGardenUseCase: FetchGardenUseCase
     private let addPlantUseCase: AddPlantToGardenUseCase
     
     // MARK: - Enums
@@ -34,7 +32,6 @@ final class ContentViewModel: ObservableObject {
     enum Action {
         case onAppear
         case selectTab(Tab)
-        case loadGarden
         case loadPlants
         case addPlant(Plant)
         case showPlantDetails(Plant)
@@ -67,7 +64,6 @@ final class ContentViewModel: ObservableObject {
         addPlantUseCase: AddPlantToGardenUseCase
     ) {
         self.fetchPlantsUseCase = fetchPlantsUseCase
-        self.fetchGardenUseCase = fetchGardenUseCase
         self.addPlantUseCase = addPlantUseCase
     }
     
@@ -78,8 +74,6 @@ final class ContentViewModel: ObservableObject {
             Task { await loadInitialData() }
         case .selectTab(let tab):
             selectedTab = tab
-        case .loadGarden:
-            Task { await loadGardenPlants() }
         case .loadPlants:
             Task { await loadAvailablePlants() }
         case .addPlant(let plant):
@@ -94,25 +88,12 @@ final class ContentViewModel: ObservableObject {
     }
     
     func loadInitialData() async {
-        await loadGardenPlants()
         await loadAvailablePlants()
     }
 }
 
 // MARK: - Private Helpers
 private extension ContentViewModel {
-    
-    func loadGardenPlants() async {
-        isLoading = true
-        defer { isLoading = false }
-        
-        do {
-            myGardenPlants = try await fetchGardenUseCase.execute()
-        } catch {
-            state = .error("Failed to load garden: \(error.localizedDescription)")
-        }
-    }
-    
     func loadAvailablePlants() async {
         guard availablePlants.isEmpty else { return }
         isLoading = true

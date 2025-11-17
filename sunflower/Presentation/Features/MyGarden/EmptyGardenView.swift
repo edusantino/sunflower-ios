@@ -25,7 +25,7 @@ struct EmptyGardenView: View {
                 .font(.system(size: Constants.titleFontSize))
                 .foregroundColor(.white)
             
-            addButton
+            AddButton()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(DesignSystem.Colors.background))
@@ -36,7 +36,7 @@ struct EmptyGardenView: View {
 }
 
 extension EmptyGardenView {
-    private var addButton: some View {
+    private func AddButton() -> some View {
         Button {
             onAddClick()
         } label: {

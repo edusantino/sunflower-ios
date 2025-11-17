@@ -66,8 +66,8 @@ struct MyGardenItem: View {
                         .needWatering
                 case .danger:
                         .dead
-                case .new:
-                        .newPlant
+                case .newPlant:
+                        .new
                 }
             }
             Tag(status: tagLevel)

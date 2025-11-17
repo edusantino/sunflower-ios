@@ -39,6 +39,8 @@ struct Tag: View {
                 textColor: .white,
                 icon: "drop"
             )
+        case .regular:
+            return TagConfiguration(text: "Regular", backgroundColor: .gray.opacity(0.9), textColor: .white)
         }
     }
     
