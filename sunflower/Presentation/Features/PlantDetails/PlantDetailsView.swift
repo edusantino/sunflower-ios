@@ -12,6 +12,7 @@ import Kingfisher
 struct PlantDetailsView: View {
     @EnvironmentObject private var viewModel: ContentViewModel
     @EnvironmentObject private var coordinator: AppCoordinator
+    @EnviromentObject private var ptdViewModel: PlantDetailsViewModel
     
     @State private var isAdded: Bool
     @State private var showToast: Bool = false
